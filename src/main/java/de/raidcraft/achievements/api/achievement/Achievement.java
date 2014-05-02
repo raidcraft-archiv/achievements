@@ -1,5 +1,7 @@
 package de.raidcraft.achievements.api.achievement;
 
+import de.raidcraft.api.action.trigger.TriggerListener;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -10,7 +12,13 @@ import java.time.Instant;
  * database, even if the achievement was not yet unlocked.
  * The progress of the achivement is also saved in this object.
  */
-public interface Achievement<T> {
+public interface Achievement<T> extends TriggerListener<T> {
+
+    @Override
+    public default T getTriggerEntityType() {
+
+        return getHolder().getType();
+    }
 
     /**
      * Gets the unique database id of the achievement.
@@ -21,11 +29,11 @@ public interface Achievement<T> {
     public int getId();
 
     /**
-     * @see AchievementTemplate#getName()
+     * @see AchievementTemplate#getIdentifier()
      */
-    public default String getName() {
+    public default String getIdentifier() {
 
-        return getTemplate().getName();
+        return getTemplate().getIdentifier();
     }
 
     /**
