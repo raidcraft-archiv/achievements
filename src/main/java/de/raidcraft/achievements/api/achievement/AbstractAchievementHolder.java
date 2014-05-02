@@ -26,7 +26,7 @@ public abstract class AbstractAchievementHolder<T> implements AchievementHolder<
     @Override
     public boolean hasAchievement(AchievementTemplate template) {
 
-        return template != null && achievements.containsKey(template.getName());
+        return template != null && achievements.containsKey(template.getIdentifier());
     }
 
     @Override
@@ -38,7 +38,7 @@ public abstract class AbstractAchievementHolder<T> implements AchievementHolder<
     @Override
     public Achievement<T> removeAchievement(AchievementTemplate template) {
 
-        Achievement<T> achievement = achievements.remove(template.getName());
+        Achievement<T> achievement = achievements.remove(template.getIdentifier());
         if (achievement != null) {
             achievement.remove();
         }

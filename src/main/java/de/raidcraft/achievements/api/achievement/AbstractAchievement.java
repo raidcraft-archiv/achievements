@@ -1,6 +1,7 @@
 package de.raidcraft.achievements.api.achievement;
 
-import de.raidcraft.achievements.api.requirement.Requirement;
+import de.raidcraft.api.action.action.Action;
+import de.raidcraft.api.action.requirement.Requirement;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -22,6 +23,8 @@ public abstract class AbstractAchievement<T> implements Achievement<T> {
     private final AchievementTemplate template;
     @NonNull
     private final Collection<Requirement<T>> applicableRequirements;
+    @NonNull
+    private final Collection<Action<T>> applicableActions;
     private Timestamp gainedDate;
 
     @SuppressWarnings("unchecked")
@@ -31,6 +34,7 @@ public abstract class AbstractAchievement<T> implements Achievement<T> {
         this.holder = holder;
         this.template = template;
         this.applicableRequirements = template.getRequirements(holder.getType().getClass());
+        this.applicableActions = template.getActions(holder.getType().getClass());
     }
 
     @Override

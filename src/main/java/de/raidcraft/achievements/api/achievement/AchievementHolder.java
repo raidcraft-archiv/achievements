@@ -27,6 +27,13 @@ public interface AchievementHolder<T> {
      */
     public T getType();
 
+    public default boolean hasAchievement(String identifier) {
+
+        return getAchievements().parallelStream().anyMatch(
+                achievement -> achievement.getIdentifier().equals(identifier)
+        );
+    }
+
     /**
      * Checks if the holder has the given achievement based on the template.
      * Will check finished and active achievements.
@@ -36,7 +43,7 @@ public interface AchievementHolder<T> {
      */
     public default boolean hasAchievement(AchievementTemplate template) {
 
-        return getAchievements().stream().anyMatch(
+        return getAchievements().parallelStream().anyMatch(
                 achievement -> achievement.getTemplate().equals(template)
         );
     }
@@ -50,7 +57,7 @@ public interface AchievementHolder<T> {
      */
     public default boolean hasGainedAchievement(AchievementTemplate template) {
 
-        return getGainedAchievements().stream().anyMatch(
+        return getGainedAchievements().parallelStream().anyMatch(
                 achievement -> achievement.getTemplate().equals(template)
         );
     }
@@ -64,7 +71,7 @@ public interface AchievementHolder<T> {
      */
     public default boolean hasActiveAchievement(AchievementTemplate template) {
 
-        return getActiveAchievements().stream().anyMatch(
+        return getActiveAchievements().parallelStream().anyMatch(
                 achievement -> achievement.getTemplate().equals(template)
         );
     }
@@ -78,7 +85,7 @@ public interface AchievementHolder<T> {
      */
     public default Collection<Achievement<T>> getActiveAchievements() {
 
-        return getAchievements().stream()
+        return getAchievements().parallelStream()
                 .filter(Achievement::isActive)
                 .collect(Collectors.toList());
     }
@@ -92,7 +99,7 @@ public interface AchievementHolder<T> {
      */
     public default Collection<Achievement<T>> getGainedAchievements() {
 
-        return getAchievements().stream()
+        return getAchievements().parallelStream()
                 .filter(Achievement::isGained)
                 .collect(Collectors.toList());
     }

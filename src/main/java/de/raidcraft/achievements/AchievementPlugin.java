@@ -1,21 +1,47 @@
 package de.raidcraft.achievements;
 
-import java.io.File;
+import de.raidcraft.RaidCraft;
+import de.raidcraft.achievements.api.achievement.AchievementHolder;
+import de.raidcraft.api.BasePlugin;
+import de.raidcraft.api.action.requirement.Requirement;
+import de.raidcraft.api.action.requirement.RequirementFactory;
+import lombok.Getter;
 
 /**
  * @author mdoering
  */
-public class AchievementPlugin {
+public class AchievementPlugin extends BasePlugin {
 
-    public static void main(String[] args) {
+    @Getter
+    private AchievementManager achievementManager;
 
-        new AchievementPlugin();
+    @Override
+    public void enable() {
+
+        achievementManager = new AchievementManager(this);
     }
 
-    public AchievementPlugin() {
+    @Override
+    public void disable() {
+        //TODO: implement
+    }
 
-        AchievementManager manager = new AchievementManager(this);
+    @Override
+    public void reload() {
 
-        manager.registerRequirementType(this, "location", (String entity, File file) -> entity.length() > file.length());
+        getAchievementManager().reload();
+    }
+
+    private void registerRequirements() {
+
+        RequirementFactory factory = RaidCraft.getComponent(RequirementFactory.class);
+
+        factory.registerRequirement(this, "holder.has-achievement", new Requirement<AchievementHolder<?>>() {
+            @Override
+            public boolean test(AchievementHolder<?> holder) {
+
+                return holder.hasAchievement(getConfig().getString("achievement"));
+            }
+        });
     }
 }

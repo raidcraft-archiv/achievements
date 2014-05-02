@@ -1,6 +1,7 @@
 package de.raidcraft.achievements.api.achievement;
 
-import de.raidcraft.achievements.api.requirement.RequirementHolder;
+import de.raidcraft.api.action.action.ActionHolder;
+import de.raidcraft.api.action.requirement.RequirementHolder;
 
 /**
  * The achievement template contains generic information about the achievement.
@@ -11,7 +12,7 @@ import de.raidcraft.achievements.api.requirement.RequirementHolder;
  *
  * Templates need to be registered with the {@link de.raidcraft.achievements.AchievementManager#registerAchievementTemplate(AchievementTemplate)}
  */
-public interface AchievementTemplate extends RequirementHolder {
+public interface AchievementTemplate extends RequirementHolder, ActionHolder {
 
     /**
      * Gets the unique name of the Achievement that can be used to compare
@@ -19,7 +20,7 @@ public interface AchievementTemplate extends RequirementHolder {
      *
      * @return unique name of the achievement
      */
-    public String getName();
+    public String getIdentifier();
 
     /**
      * Gets the friendly display name of the achievement as it is displayed
