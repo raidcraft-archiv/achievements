@@ -1,7 +1,7 @@
 package de.raidcraft.achievements;
 
-import de.raidcraft.achievements.api.achievement.AchievementTemplate;
-import de.raidcraft.achievements.api.achievement.DuplicateAchievementException;
+import de.raidcraft.api.achievement.AchievementTemplate;
+import de.raidcraft.api.achievement.DuplicateAchievementException;
 import de.raidcraft.achievements.config.YAMLAchievementTemplate;
 import de.raidcraft.api.config.SimpleConfiguration;
 

@@ -1,7 +1,7 @@
 package de.raidcraft.achievements;
 
 import de.raidcraft.RaidCraft;
-import de.raidcraft.achievements.api.achievement.AchievementHolder;
+import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.action.requirement.Requirement;
 import de.raidcraft.api.action.requirement.RequirementFactory;
