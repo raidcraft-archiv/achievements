@@ -1,6 +1,7 @@
-package de.raidcraft.achievements;
+package de.raidcraft.achievements.config;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.achievements.api.achievement.AbstractAchievementTemplate;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.action.ActionFactory;
