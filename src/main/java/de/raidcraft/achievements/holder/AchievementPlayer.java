@@ -42,6 +42,12 @@ public class AchievementPlayer extends AbstractAchievementHolder<Player> {
     }
 
     @Override
+    public boolean hasPermission(String permission) {
+
+        return getType().hasPermission(permission);
+    }
+
+    @Override
     public UUID getUniqueIdentifier() {
 
         return getType().getUniqueId();

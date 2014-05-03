@@ -28,19 +28,24 @@ public class TAchievementTemplate {
         if (entry == null) {
             entry = new TAchievementTemplate();
             entry.setIdentifier(template.getIdentifier());
-            entry.setDisplayName(template.getDisplayName());
-            entry.setDescription(template.getDescription());
-            database.save(entry);
+            save(template, entry);
         }
         return entry;
     }
 
     public static void save(AchievementTemplate template) {
 
-        TAchievementTemplate entry = load(template);
+        save(template, load(template));
+    }
+
+    private static void save(AchievementTemplate template, TAchievementTemplate entry) {
+
         entry.setDisplayName(template.getDisplayName());
         entry.setDescription(template.getDescription());
-        RaidCraft.getDatabase(AchievementPlugin.class).update(entry);
+        entry.setEnabled(template.isEnabled());
+        entry.setSecret(template.isSecret());
+        entry.setBroadcasting(template.isBroadcasting());
+        RaidCraft.getDatabase(AchievementPlugin.class).save(entry);
     }
 
     public static void delete(AchievementTemplate template) {
@@ -55,4 +60,7 @@ public class TAchievementTemplate {
     private String identifier;
     private String displayName;
     private String description;
+    private boolean enabled;
+    private boolean secret;
+    private boolean broadcasting;
 }
