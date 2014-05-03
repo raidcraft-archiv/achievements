@@ -1,27 +1,50 @@
 package de.raidcraft.achievements;
 
+import de.raidcraft.RaidCraft;
+import de.raidcraft.achievements.achievements.PlayerAchievement;
+import de.raidcraft.achievements.config.YAMLAchievementTemplate;
+import de.raidcraft.achievements.database.TAchievementTemplate;
+import de.raidcraft.achievements.holder.AchievementPlayer;
+import de.raidcraft.api.Component;
+import de.raidcraft.api.achievement.Achievement;
+import de.raidcraft.api.achievement.AchievementException;
+import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.achievement.AchievementTemplate;
 import de.raidcraft.api.achievement.DuplicateAchievementException;
-import de.raidcraft.achievements.config.YAMLAchievementTemplate;
 import de.raidcraft.api.config.SimpleConfiguration;
+import de.raidcraft.util.CaseInsensitiveMap;
+import de.raidcraft.util.UUIDUtil;
+import lombok.NonNull;
+import lombok.SneakyThrows;
+import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author mdoering
  */
-public class AchievementManager {
+public final class AchievementManager implements Component {
 
     private final AchievementPlugin plugin;
-    private final Map<String, AchievementTemplate> registeredTemplates = new HashMap<>(); // TODO: make case insenstive
+    private final Map<String, AchievementTemplate> registeredTemplates = new CaseInsensitiveMap<>();
+    private final Map<Class<?>, Constructor<? extends AchievementHolder<?>>> registeredHolders = new HashMap<>();
+    private final Map<Class<?>, Constructor<? extends Achievement<?>>> registeredAchievements = new HashMap<>();
+    private final Map<UUID, AchievementHolder<?>> cachedHolders = new HashMap<>();
 
     protected AchievementManager(AchievementPlugin plugin) {
 
         this.plugin = plugin;
+        registerAchievementHolder(Player.class, AchievementPlayer.class);
+        registerAchievement(Player.class, PlayerAchievement.class);
+        RaidCraft.registerComponent(AchievementManager.class, this);
+        load();
     }
 
     private void load() {
@@ -48,16 +71,19 @@ public class AchievementManager {
         try {
             if (!identifier.equals("")) identifier += ".";
             identifier += file.getName().toLowerCase();
-            registerAchievementTemplate(new YAMLAchievementTemplate(identifier, new SimpleConfiguration<>(plugin, file)));
-            plugin.getLogger().info("loaded achievement: " + identifier);
+            YAMLAchievementTemplate template = new YAMLAchievementTemplate(identifier, new SimpleConfiguration<>(plugin, file));
+            registerAchievementTemplate(template);
+            TAchievementTemplate.save(template);
+            plugin.getLogger().info("loaded template: " + identifier);
         } catch (DuplicateAchievementException e) {
             plugin.getLogger().warning(e.getMessage());
         }
     }
 
-    private void unload() {
+    public void unload() {
 
         registeredTemplates.clear();
+        cachedHolders.clear();
     }
 
     public void reload() {
@@ -77,5 +103,97 @@ public class AchievementManager {
     public void unregisterAchievementTemplate(AchievementTemplate template) {
 
         registeredTemplates.remove(template.getIdentifier());
+    }
+
+    public AchievementTemplate getAchievementTemplate(String identifier) throws AchievementException {
+
+        if (!registeredTemplates.containsKey(identifier)) {
+            throw new AchievementException("No achievement template found: " + identifier);
+        }
+        return registeredTemplates.get(identifier);
+    }
+
+    @SneakyThrows
+    public <T> void registerAchievementHolder(Class<T> type, Class<? extends AchievementHolder<T>> clazz) {
+
+        if (registeredHolders.containsKey(type)) {
+            throw new AchievementException("Holder type " + clazz.getCanonicalName() + " for " + type.getCanonicalName() + " already exists!");
+        }
+        try {
+            Constructor<? extends AchievementHolder<T>> constructor = clazz.getDeclaredConstructor(type);
+            registeredHolders.put(type, constructor);
+        } catch (NoSuchMethodException e) {
+            throw new AchievementException(e);
+        }
+    }
+
+    public void unregisterHolder(Class<?> type) {
+
+        registeredHolders.remove(type);
+    }
+
+    @SneakyThrows
+    @SuppressWarnings("unchecked")
+    public <T> AchievementHolder<T> getAchievementHolder(@NonNull UUID uuid, @NonNull T type) {
+
+        if (cachedHolders.containsKey(uuid)) {
+            return (AchievementHolder<T>) cachedHolders.get(uuid);
+        }
+        if (!registeredHolders.containsKey(type.getClass())) {
+            throw new AchievementException("No holder for type " + type.getClass().getCanonicalName() + " found!");
+        }
+        try {
+            Constructor<? extends AchievementHolder<?>> constructor = registeredHolders.get(type.getClass());
+            constructor.setAccessible(true);
+            AchievementHolder<T> holder = (AchievementHolder<T>) constructor.newInstance(type);
+            cachedHolders.put(uuid, holder);
+            return holder;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new AchievementException(e);
+        }
+    }
+
+    @SneakyThrows
+    public <T> void registerAchievement(Class<T> type, Class<? extends Achievement<T>> clazz) {
+
+        if (registeredAchievements.containsKey(type)) {
+            throw new AchievementException("achievement type " + clazz.getCanonicalName() + " for " + type.getCanonicalName() + " already exists!");
+        }
+        try {
+            Constructor<? extends Achievement<T>> constructor = clazz.getDeclaredConstructor(AchievementHolder.class, AchievementTemplate.class);
+            registeredAchievements.put(type, constructor);
+        } catch (NoSuchMethodException e) {
+            throw new AchievementException(e);
+        }
+    }
+
+    public void unregisterAchievement(Class<?> type) {
+
+        registeredAchievements.remove(type);
+    }
+
+    @SneakyThrows
+    @SuppressWarnings("unchecked")
+    public <T> Achievement<T> getAchievement(@NonNull AchievementHolder<T> holder, @NonNull AchievementTemplate template) {
+
+        if (holder.hasAchievement(template)) {
+            return holder.getAchievement(template);
+        }
+        if (!registeredAchievements.containsKey(holder.getType().getClass())) {
+            throw new AchievementException("No achievement for type " + (holder.getType().getClass().getCanonicalName() + " found!"));
+        }
+        try {
+            Constructor<? extends Achievement<?>> constructor = registeredAchievements.get(holder.getType().getClass());
+            constructor.setAccessible(true);
+            return (Achievement<T>) constructor.newInstance(holder, template);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new AchievementException(e);
+        }
+    }
+
+    @SneakyThrows
+    public <T> Achievement<T> getAchievement(@NonNull T type, @NonNull AchievementTemplate template) {
+
+        return getAchievement(getAchievementHolder(UUIDUtil.getUUIDfrom(type), type), template);
     }
 }

@@ -1,11 +1,17 @@
 package de.raidcraft.achievements;
 
 import de.raidcraft.RaidCraft;
-import de.raidcraft.api.achievement.AchievementHolder;
+import de.raidcraft.achievements.database.TAchievement;
+import de.raidcraft.achievements.database.TAchievementHolder;
+import de.raidcraft.achievements.database.TAchievementTemplate;
 import de.raidcraft.api.BasePlugin;
+import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.action.requirement.Requirement;
 import de.raidcraft.api.action.requirement.RequirementFactory;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author mdoering
@@ -23,7 +29,8 @@ public class AchievementPlugin extends BasePlugin {
 
     @Override
     public void disable() {
-        //TODO: implement
+
+        getAchievementManager().unload();
     }
 
     @Override
@@ -43,5 +50,15 @@ public class AchievementPlugin extends BasePlugin {
                 return holder.hasAchievement(getConfig().getString("achievement"));
             }
         });
+    }
+
+    @Override
+    public List<Class<?>> getDatabaseClasses() {
+
+        List<Class<?>> tables = new ArrayList<>();
+        tables.add(TAchievement.class);
+        tables.add(TAchievementHolder.class);
+        tables.add(TAchievementTemplate.class);
+        return tables;
     }
 }

@@ -1,8 +1,11 @@
 package de.raidcraft.achievements.config;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.achievements.AchievementManager;
 import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.api.achievement.AbstractAchievementTemplate;
+import de.raidcraft.api.achievement.Achievement;
+import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.action.ActionFactory;
 import de.raidcraft.api.action.requirement.Requirement;
@@ -50,5 +53,11 @@ public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
                 .map(key -> RaidCraft.getComponent(ActionFactory.class)
                         .create(actions.getString(key + ".type"), actions.getConfigurationSection(key)))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public <T> Achievement<T> createAchievement(AchievementHolder<T> holder) {
+
+        return RaidCraft.getComponent(AchievementManager.class).getAchievement(holder, this);
     }
 }
