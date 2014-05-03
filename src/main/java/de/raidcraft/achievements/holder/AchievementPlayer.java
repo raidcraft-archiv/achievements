@@ -54,12 +54,6 @@ public class AchievementPlayer extends AbstractAchievementHolder<Player> {
     }
 
     @Override
-    public void addAchievement(AchievementTemplate template) {
-
-
-    }
-
-    @Override
     public void save() {
 
         TAchievementHolder.save(this);
