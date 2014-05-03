@@ -34,6 +34,7 @@ public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
         super(name, config.getString("name", name));
         this.config = config;
         setDescription(config.getString("description", ""));
+        setPoints(config.getInt("points", 10));
         setEnabled(config.getBoolean("enabled", isEnabled()));
         setSecret(config.getBoolean("secret", isSecret()));
         setBroadcasting(config.getBoolean("broadcasting", isBroadcasting()));

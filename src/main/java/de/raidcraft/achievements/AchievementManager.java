@@ -21,7 +21,9 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,7 @@ public final class AchievementManager implements Component {
     private void load() {
 
         loadFiles("", new File(plugin.getDataFolder(), "achievements").listFiles());
+        plugin.getLogger().info("Loaded " + registeredAchievements.size() + " achievements...");
     }
 
     private void loadFiles(String base, File[] files) {
@@ -90,6 +93,11 @@ public final class AchievementManager implements Component {
 
         unload();
         load();
+    }
+
+    public Collection<AchievementTemplate> getAchievements() {
+
+        return new ArrayList<>(registeredTemplates.values());
     }
 
     public void registerAchievementTemplate(AchievementTemplate template) throws DuplicateAchievementException {

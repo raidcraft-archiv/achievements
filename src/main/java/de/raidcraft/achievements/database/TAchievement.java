@@ -42,7 +42,7 @@ public class TAchievement {
     public static void save(Achievement achievement) {
 
         TAchievement entry = load(achievement);
-        entry.setCompleted(achievement.getGainedDate());
+        entry.setCompleted(achievement.getCompletionDate());
         RaidCraft.getDatabase(AchievementPlugin.class).update(entry);
     }
 

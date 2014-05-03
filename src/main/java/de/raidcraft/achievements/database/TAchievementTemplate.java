@@ -42,6 +42,7 @@ public class TAchievementTemplate {
 
         entry.setDisplayName(template.getDisplayName());
         entry.setDescription(template.getDescription());
+        entry.setPoints(template.getPoints());
         entry.setEnabled(template.isEnabled());
         entry.setSecret(template.isSecret());
         entry.setBroadcasting(template.isBroadcasting());
@@ -60,6 +61,7 @@ public class TAchievementTemplate {
     private String identifier;
     private String displayName;
     private String description;
+    private int points;
     private boolean enabled;
     private boolean secret;
     private boolean broadcasting;

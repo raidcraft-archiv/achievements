@@ -1,6 +1,7 @@
 package de.raidcraft.achievements;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.achievements.commands.BaseCommands;
 import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.achievements.database.TAchievementTemplate;
@@ -25,6 +26,7 @@ public class AchievementPlugin extends BasePlugin {
     public void enable() {
 
         achievementManager = new AchievementManager(this);
+        registerCommands(BaseCommands.class);
     }
 
     @Override

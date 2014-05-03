@@ -1,0 +1,31 @@
+main: de.raidcraft.achievements.AchievementsPlugin
+name: RCAchievements
+version: ${project.version}#${build.number}
+description: Implementation of the achievements API.
+author: Silthus
+website: http://www.raid-craft.de
+depend: [RaidCraft-API]
+database: true
+permissions:
+  rcskills.player:
+      description: Gives access to all relevant player commands.
+      default: false
+      children:
+        rcachievements.cmd.top: true
+  rcskills.mod:
+    description: Grants aditional command permissions for moderators
+    default: false
+    children:
+      rcachievements.player: true
+      rcachievements.achievement.create: true
+      rcachievements.achievement.enable: true
+      rcachievements.achievement.disable: true
+      rcachievements.reload: true
+      rcachievements.gain-disabled: true
+  rcskills.admin:
+    description: Grants all rcskills permissions.
+    default: false
+    children:
+      rcskills.mod: true
+      rcachievements.achievement.give: true
+      rcachievements.achievement.remove: true
