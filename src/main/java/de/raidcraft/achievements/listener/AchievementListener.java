@@ -28,13 +28,20 @@ public class AchievementListener extends Trigger implements Listener {
         // broadcast if wanted
         if (event.getAchievement().getTemplate().isBroadcasting()) {
             Arrays.asList(Bukkit.getOnlinePlayers()).forEach(player -> {
-                        if (player.equals(event.getAchievement().getHolder().getType())) return;
-                        Translator.msg(AchievementPlugin.class, player, "achievement.broadcast",
-                                ChatColor.GREEN + "{0}" + ChatColor.YELLOW + " hat den Erfolg " + ChatColor.BLUE + ChatColor.UNDERLINE +
-                                "{1}" + ChatColor.RESET + ChatColor.YELLOW + " erhalten.",
-                                event.getAchievement().getHolder().getDisplayName(),
-                                event.getAchievement().getDisplayName()
-                        );
+                        if (player.equals(event.getAchievement().getHolder().getType())) {
+                            Translator.msg(AchievementPlugin.class, player, "achievement.get",
+                                    ChatColor.YELLOW + "Du hast den Erfolg " + ChatColor.BLUE + ChatColor.UNDERLINE +
+                                            "{0}" + ChatColor.RESET + ChatColor.YELLOW + " erhalten.",
+                                    event.getAchievement().getDisplayName()
+                            );
+                        } else {
+                            Translator.msg(AchievementPlugin.class, player, "achievement.broadcast",
+                                    ChatColor.GREEN + "{0}" + ChatColor.YELLOW + " hat den Erfolg " + ChatColor.BLUE + ChatColor.UNDERLINE +
+                                            "{1}" + ChatColor.RESET + ChatColor.YELLOW + " erhalten.",
+                                    event.getAchievement().getHolder().getDisplayName(),
+                                    event.getAchievement().getDisplayName()
+                            );
+                        }
                     }
             );
         }
