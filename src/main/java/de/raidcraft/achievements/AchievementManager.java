@@ -53,7 +53,7 @@ public final class AchievementManager implements Component {
     private void load() {
 
         loadFiles("", new File(plugin.getDataFolder(), "achievements").listFiles());
-        plugin.getLogger().info("Loaded " + registeredAchievements.size() + " achievements...");
+        plugin.getLogger().info("Loaded " + registeredTemplates.size() + " achievements...");
         // lets check all online players and reregister their listeners
         Arrays.asList(Bukkit.getOnlinePlayers()).forEach(player -> {
 
