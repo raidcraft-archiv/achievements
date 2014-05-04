@@ -2,7 +2,7 @@ package de.raidcraft.achievements.holder;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementManager;
-import de.raidcraft.achievements.achievements.PlayerAchievement;
+import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.api.achievement.AbstractAchievementHolder;
 import de.raidcraft.api.achievement.Achievement;
@@ -12,7 +12,6 @@ import de.raidcraft.util.CaseInsensitiveMap;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * @author Silthus
@@ -27,18 +26,19 @@ public class AchievementPlayer extends AbstractAchievementHolder<Player> {
     @Override
     protected CaseInsensitiveMap<Achievement<Player>> loadAchievements() {
 
+        CaseInsensitiveMap<Achievement<Player>> map = new CaseInsensitiveMap<>();
         AchievementManager manager = RaidCraft.getComponent(AchievementManager.class);
         TAchievementHolder holder = TAchievementHolder.load(this);
-        return new CaseInsensitiveMap<>(holder.getAchievements().stream()
-                .map(entry -> {
-                    try {
-                        return manager.getAchievementTemplate(entry.getTemplate().getIdentifier());
-                    } catch (AchievementException e) {
-                        RaidCraft.LOGGER.warning("loading player (" + getDisplayName() + ":" + getUniqueIdentifier() + "): " + e.getMessage());
-                    }
-                    return null;
-                }).filter(entry -> entry != null)
-                .collect(Collectors.toMap(AchievementTemplate::getIdentifier, template -> new PlayerAchievement(this, template))));
+        for (TAchievement achievementEntry : holder.getAchievements()) {
+            try {
+                AchievementTemplate template = manager.getAchievementTemplate(achievementEntry.getTemplate().getIdentifier());
+                Achievement<Player> achievement = template.createAchievement(this);
+                achievement.setCompletionDate(achievementEntry.getCompleted());
+                map.put(achievement.getIdentifier(), achievement);
+            } catch (AchievementException ignored) {
+            }
+        }
+        return map;
     }
 
     @Override
