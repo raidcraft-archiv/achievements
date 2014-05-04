@@ -5,6 +5,8 @@ import com.avaje.ebean.validation.NotNull;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.api.achievement.Achievement;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,8 @@ import java.sql.Timestamp;
 /**
  * @author Silthus
  */
+@EqualsAndHashCode(of = {"id"})
+@Data
 @Entity
 @Table(name = "achievements_holder_achievements")
 public class TAchievement {
@@ -60,63 +64,4 @@ public class TAchievement {
     @Column(name = "template_id")
     private TAchievementTemplate template;
     private Timestamp completed;
-
-    public int getId() {
-
-        return id;
-    }
-
-    public void setId(int id) {
-
-        this.id = id;
-    }
-
-    public TAchievementHolder getHolder() {
-
-        return holder;
-    }
-
-    public void setHolder(TAchievementHolder holder) {
-
-        this.holder = holder;
-    }
-
-    public TAchievementTemplate getTemplate() {
-
-        return template;
-    }
-
-    public void setTemplate(TAchievementTemplate template) {
-
-        this.template = template;
-    }
-
-    public Timestamp getCompleted() {
-
-        return completed;
-    }
-
-    public void setCompleted(Timestamp completed) {
-
-        this.completed = completed;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (!(o instanceof TAchievement)) return false;
-
-        TAchievement that = (TAchievement) o;
-
-        if (id != that.id) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return id;
-    }
 }
