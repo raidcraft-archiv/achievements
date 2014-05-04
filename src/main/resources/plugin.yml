@@ -12,6 +12,7 @@ permissions:
       default: false
       children:
         rcachievements.cmd.top: true
+        rcachievements.cmd.list: true
   rcachievements.mod:
     description: Grants aditional command permissions for moderators
     default: false
