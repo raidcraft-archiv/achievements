@@ -5,9 +5,9 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.api.achievement.Achievement;
 import de.raidcraft.api.achievement.AchievementHolder;
+import lombok.Data;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,10 +15,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Silthus
  */
+@Data
 @Entity
 @Table(name = "achievements_holders")
 public class TAchievementHolder {
@@ -27,11 +29,11 @@ public class TAchievementHolder {
 
         EbeanServer database = RaidCraft.getDatabase(AchievementPlugin.class);
         TAchievementHolder tableEntry = database.find(TAchievementHolder.class).where()
-                .eq("uuid", holder.getUniqueIdentifier().toString()).findUnique();
+                .eq("uuid", holder.getUniqueIdentifier()).findUnique();
         if (tableEntry == null) {
             tableEntry = new TAchievementHolder();
             tableEntry.setName(holder.getDisplayName());
-            tableEntry.setUuid(holder.getUniqueIdentifier().toString());
+            tableEntry.setUuid(holder.getUniqueIdentifier());
             tableEntry.setPoints(holder.getTotalPoints());
             database.save(tableEntry);
         }
@@ -54,61 +56,10 @@ public class TAchievementHolder {
 
     @Id
     private int id;
-    @Column(unique = true)
-    private String uuid;
+    private UUID uuid;
     private String name;
     private int points;
     @JoinColumn(name = "holder_id")
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<TAchievement> achievements = new ArrayList<>();
-
-    public int getId() {
-
-        return id;
-    }
-
-    public void setId(int id) {
-
-        this.id = id;
-    }
-
-    public String getUuid() {
-
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-
-        return name;
-    }
-
-    public void setName(String name) {
-
-        this.name = name;
-    }
-
-    public int getPoints() {
-
-        return points;
-    }
-
-    public void setPoints(int points) {
-
-        this.points = points;
-    }
-
-    public List<TAchievement> getAchievements() {
-
-        return achievements;
-    }
-
-    public void setAchievements(List<TAchievement> achievements) {
-
-        this.achievements = achievements;
-    }
 }
