@@ -8,6 +8,7 @@ import de.raidcraft.api.achievement.AchievementHolder;
 import lombok.Data;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -56,6 +57,7 @@ public class TAchievementHolder {
 
     @Id
     private int id;
+    @Column(unique = true)
     private UUID uuid;
     private String name;
     private int points;
