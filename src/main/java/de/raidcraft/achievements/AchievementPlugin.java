@@ -3,7 +3,6 @@ package de.raidcraft.achievements;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.commands.BaseCommands;
 import de.raidcraft.achievements.database.TAchievement;
-import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.achievements.database.TAchievementTemplate;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.achievement.AchievementHolder;
@@ -59,7 +58,7 @@ public class AchievementPlugin extends BasePlugin {
 
         List<Class<?>> tables = new ArrayList<>();
         tables.add(TAchievement.class);
-        tables.add(TAchievementHolder.class);
+        // tables.add(TAchievementHolder.class);
         tables.add(TAchievementTemplate.class);
         return tables;
     }
