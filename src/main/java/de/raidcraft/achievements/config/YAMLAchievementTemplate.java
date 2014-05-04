@@ -38,6 +38,10 @@ public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
         setEnabled(config.getBoolean("enabled", isEnabled()));
         setSecret(config.getBoolean("secret", isSecret()));
         setBroadcasting(config.getBoolean("broadcasting", isBroadcasting()));
+        // load everything
+        setActions(loadActions());
+        setRequirements(loadRequirements());
+        setTrigger(loadTrigger());
     }
 
     @Override

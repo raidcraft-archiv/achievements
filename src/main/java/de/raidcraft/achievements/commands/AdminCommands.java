@@ -71,7 +71,7 @@ public class AdminCommands {
         config.set("secret", args.hasFlag('s'));
         config.set("trigger.0.type", "player.move");
         Location location = ((Player) sender).getLocation();
-        config.set("trigger.0.world", location.getWorld());
+        config.set("trigger.0.world", location.getWorld().getName());
         config.set("trigger.0.x", location.getBlockX());
         config.set("trigger.0.y", location.getBlockY());
         config.set("trigger.0.z", location.getBlockZ());
