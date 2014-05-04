@@ -7,6 +7,7 @@ import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.api.achievement.Achievement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 /**
  * @author Silthus
  */
+@ToString(of = {"id"})
 @EqualsAndHashCode(of = {"id"})
 @Data
 @Entity

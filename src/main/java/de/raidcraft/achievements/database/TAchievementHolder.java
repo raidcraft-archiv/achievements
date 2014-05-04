@@ -7,6 +7,7 @@ import de.raidcraft.api.achievement.Achievement;
 import de.raidcraft.api.achievement.AchievementHolder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,6 +23,7 @@ import java.util.UUID;
 /**
  * @author Silthus
  */
+@ToString(of = {"id", "uuid", "displayName", "points"})
 @EqualsAndHashCode(of = {"id"})
 @Data
 @Entity
