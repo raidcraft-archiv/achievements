@@ -10,6 +10,7 @@ import de.raidcraft.util.PaginatedResult;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public class PlayerCommands {
     public void toplist(CommandContext args, CommandSender sender) throws CommandException {
 
         List<TAchievementHolder> list = plugin.getDatabase().find(TAchievementHolder.class).orderBy("points").findList();
+        Collections.reverse(list);
         new PaginatedResult<TAchievementHolder>("Platz. Spieler (Punkte)") {
 
             @Override

@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 /**
@@ -42,7 +43,9 @@ public class BaseCommands {
             @Override
             public String format(Achievement<Player> entry) {
 
-                return ChatColor.YELLOW + "" + entry.getCompletionDate() + ": " + ChatColor.AQUA + entry.getDisplayName();
+                return ChatColor.YELLOW + "" + entry.getCompletionDate().toLocalDateTime()
+                        .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
+                        + ": " + ChatColor.AQUA + entry.getDisplayName();
             }
         }.display(sender, holder.getCompletedAchievements().stream()
                 .sorted((el, o) -> el.getCompletionDate().compareTo(o.getCompletionDate())).collect(Collectors.toList()),
