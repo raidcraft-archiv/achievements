@@ -74,7 +74,8 @@ public final class AchievementManager implements Component {
         try {
             if (!identifier.equals("")) identifier += ".";
             identifier += file.getName().toLowerCase();
-            YAMLAchievementTemplate template = new YAMLAchievementTemplate(identifier, new SimpleConfiguration<>(plugin, file));
+            identifier = identifier.replace(".yml", "");
+            YAMLAchievementTemplate template = new YAMLAchievementTemplate(identifier, plugin.configure(new SimpleConfiguration<>(plugin, file)));
             registerAchievementTemplate(template);
             TAchievementTemplate.save(template);
             plugin.getLogger().info("loaded template: " + identifier);
