@@ -28,6 +28,7 @@ public class TAchievementTemplate {
         if (entry == null) {
             entry = new TAchievementTemplate();
             entry.setIdentifier(template.getIdentifier());
+            database.save(entry);
             save(template, entry);
         }
         return entry;
@@ -46,7 +47,7 @@ public class TAchievementTemplate {
         entry.setEnabled(template.isEnabled());
         entry.setSecret(template.isSecret());
         entry.setBroadcasting(template.isBroadcasting());
-        RaidCraft.getDatabase(AchievementPlugin.class).save(entry);
+        RaidCraft.getDatabase(AchievementPlugin.class).update(entry);
     }
 
     public static void delete(AchievementTemplate template) {
