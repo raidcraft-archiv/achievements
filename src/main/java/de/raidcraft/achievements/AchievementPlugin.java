@@ -61,7 +61,7 @@ public class AchievementPlugin extends BasePlugin {
             @Override
             public boolean test(AchievementHolder<?> holder) {
 
-                return holder.hasAchievement(getConfig().getString("achievement"));
+                return !getConfig().isSet("achievement") || holder.hasAchievement(getConfig().getString("achievement"));
             }
         });
     }
