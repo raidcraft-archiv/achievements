@@ -62,7 +62,7 @@ public class AchievementPlugin extends BasePlugin {
             public boolean test(Player player) {
 
                 return !getConfig().isSet("achievement")
-                        || getAchievementManager().getAchievementHolder(player).hasAchievement(getConfig().getString("achievement"));
+                        || getAchievementManager().getAchievementHolder(player).hasGainedAchievement(getConfig().getString("achievement"));
             }
         });
     }
