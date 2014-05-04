@@ -43,7 +43,9 @@ public class TAchievementHolder {
 
     public static void save(AchievementHolder<?> holder) {
 
-        holder.getAchievements().forEach(Achievement::save);
+        for (Achievement<?> achievement : holder.getAchievements()) {
+            achievement.save();
+        }
         TAchievementHolder entry = load(holder);
         entry.setDisplayName(holder.getDisplayName());
         entry.setPoints(holder.getTotalPoints());
