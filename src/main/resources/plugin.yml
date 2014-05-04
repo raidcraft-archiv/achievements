@@ -22,6 +22,7 @@ permissions:
       rcachievements.achievement.disable: true
       rcachievements.reload: true
       rcachievements.gain-disabled: true
+      rcachievements.cmd.listall: true
   rcachievements.admin:
     description: Grants all rcskills permissions.
     default: false

@@ -9,6 +9,7 @@ import de.raidcraft.api.achievement.Achievement;
 import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.achievement.AchievementTemplate;
 import de.raidcraft.api.config.SimpleConfiguration;
+import de.raidcraft.util.PaginatedResult;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -154,5 +155,22 @@ public class AdminCommands {
         Achievement<Player> achievement = holder.addAchievement(template);
         achievement.remove();
         sender.sendMessage(ChatColor.RED + " The achievement '" + achievement.getDisplayName() + "' has been removed from: " + player.getName());
+    }
+
+    @Command(
+            aliases = {"list"},
+            desc = "Lists all available achievements",
+            flags = "p:"
+    )
+    @CommandPermissions("rcachievements.cmd.listall")
+    public void list(CommandContext args, CommandSender sender) throws CommandException {
+
+        new PaginatedResult<AchievementTemplate>("Achievement Name [ID]") {
+            @Override
+            public String format(AchievementTemplate entry) {
+
+                return ChatColor.YELLOW + entry.getDisplayName() + ChatColor.GRAY + " [" + entry.getIdentifier() + "]";
+            }
+        }.display(sender, plugin.getAchievementManager().getAchievements(), args.getFlagInteger('p', 1));
     }
 }
