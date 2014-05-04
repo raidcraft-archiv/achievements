@@ -16,6 +16,7 @@ import de.raidcraft.util.CaseInsensitiveMap;
 import de.raidcraft.util.UUIDUtil;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -53,6 +54,14 @@ public final class AchievementManager implements Component {
 
         loadFiles("", new File(plugin.getDataFolder(), "achievements").listFiles());
         plugin.getLogger().info("Loaded " + registeredAchievements.size() + " achievements...");
+        // lets check all online players and reregister their listeners
+        Arrays.asList(Bukkit.getOnlinePlayers()).forEach(player -> {
+
+            AchievementHolder<Player> holder = getAchievementHolder(player);
+            // this will trigger all achievements to start listening
+            plugin.getAchievementManager().getAchievements().forEach(holder::addAchievement);
+            holder.getAchievements().forEach(Achievement::registerListeners);
+        });
     }
 
     private void loadFiles(String base, File[] files) {
@@ -86,6 +95,11 @@ public final class AchievementManager implements Component {
 
     public void unload() {
 
+        // first unregister all listeners
+        Arrays.asList(Bukkit.getOnlinePlayers()).forEach(
+                player -> getAchievementHolder(player).getAchievements()
+                        .forEach(Achievement::unregisterListeners)
+        );
         registeredTemplates.clear();
         cachedHolders.clear();
     }
@@ -139,6 +153,11 @@ public final class AchievementManager implements Component {
     public void unregisterHolder(Class<?> type) {
 
         registeredHolders.remove(type);
+    }
+
+    public AchievementHolder<Player> getAchievementHolder(Player player) {
+
+        return getAchievementHolder(player.getUniqueId(), player);
     }
 
     @SneakyThrows

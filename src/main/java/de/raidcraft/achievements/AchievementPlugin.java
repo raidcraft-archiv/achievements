@@ -5,6 +5,7 @@ import de.raidcraft.achievements.commands.BaseCommands;
 import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.achievements.database.TAchievementTemplate;
+import de.raidcraft.achievements.listener.PlayerListener;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.action.requirement.Requirement;
@@ -27,6 +28,7 @@ public class AchievementPlugin extends BasePlugin {
 
         achievementManager = new AchievementManager(this);
         registerCommands(BaseCommands.class);
+        registerEvents(new PlayerListener(this));
     }
 
     @Override
