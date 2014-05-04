@@ -167,11 +167,12 @@ public final class AchievementManager implements Component {
         if (cachedHolders.containsKey(uuid)) {
             return (AchievementHolder<T>) cachedHolders.get(uuid);
         }
-        if (!registeredHolders.containsKey(type.getClass())) {
+        Class<?> aClass = registeredHolders.keySet().stream().filter(clazz -> clazz.isAssignableFrom(type.getClass())).findFirst().get();
+        if (aClass == null) {
             throw new AchievementException("No holder for type " + type.getClass().getCanonicalName() + " found!");
         }
         try {
-            Constructor<? extends AchievementHolder<?>> constructor = registeredHolders.get(type.getClass());
+            Constructor<? extends AchievementHolder<?>> constructor = registeredHolders.get(aClass);
             constructor.setAccessible(true);
             AchievementHolder<T> holder = (AchievementHolder<T>) constructor.newInstance(type);
             cachedHolders.put(uuid, holder);
@@ -207,11 +208,12 @@ public final class AchievementManager implements Component {
         if (holder.hasAchievement(template)) {
             return holder.getAchievement(template);
         }
-        if (!registeredAchievements.containsKey(holder.getType().getClass())) {
+        Class<?> aClass = registeredAchievements.keySet().stream().filter(clazz -> clazz.isAssignableFrom(holder.getType().getClass())).findFirst().get();
+        if (aClass == null) {
             throw new AchievementException("No achievement for type " + (holder.getType().getClass().getCanonicalName() + " found!"));
         }
         try {
-            Constructor<? extends Achievement<?>> constructor = registeredAchievements.get(holder.getType().getClass());
+            Constructor<? extends Achievement<?>> constructor = registeredAchievements.get(aClass);
             constructor.setAccessible(true);
             return (Achievement<T>) constructor.newInstance(holder, template);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
