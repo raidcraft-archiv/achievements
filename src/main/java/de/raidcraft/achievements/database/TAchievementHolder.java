@@ -5,7 +5,6 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.api.achievement.Achievement;
 import de.raidcraft.api.achievement.AchievementHolder;
-import lombok.Data;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,7 +20,6 @@ import java.util.UUID;
 /**
  * @author Silthus
  */
-@Data
 @Entity
 @Table(name = "achievements_holders")
 public class TAchievementHolder {
@@ -65,4 +63,73 @@ public class TAchievementHolder {
     @JoinColumn(name = "holder_id")
     @OneToMany(cascade = CascadeType.REMOVE)
     private List<TAchievement> achievements = new ArrayList<>();
+
+    public int getId() {
+
+        return id;
+    }
+
+    public void setId(int id) {
+
+        this.id = id;
+    }
+
+    public UUID getUuid() {
+
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+
+        this.uuid = uuid;
+    }
+
+    public String getDisplayName() {
+
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+
+        this.displayName = displayName;
+    }
+
+    public int getPoints() {
+
+        return points;
+    }
+
+    public void setPoints(int points) {
+
+        this.points = points;
+    }
+
+    public List<TAchievement> getAchievements() {
+
+        return achievements;
+    }
+
+    public void setAchievements(List<TAchievement> achievements) {
+
+        this.achievements = achievements;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (!(o instanceof TAchievementHolder)) return false;
+
+        TAchievementHolder that = (TAchievementHolder) o;
+
+        if (id != that.id) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return id;
+    }
 }
