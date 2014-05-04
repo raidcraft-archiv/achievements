@@ -112,16 +112,12 @@ public class AdminCommands {
 
     private AchievementTemplate getMatchingTemplate(CommandContext args, boolean enabled) throws CommandException {
 
-        AchievementTemplate template = plugin.getAchievementManager().getAchievements().stream()
+        return plugin.getAchievementManager().getAchievements().stream()
                 .filter(achievement -> achievement.isEnabled() == enabled)
                 .filter(achievement -> achievement.getIdentifier().startsWith(args.getString(0).toLowerCase())
                         || achievement.getDisplayName().toLowerCase().startsWith(args.getJoinedStrings(0).toLowerCase()))
-                .findFirst().get();
-        if (template == null) {
-            throw new CommandException("No " + (enabled ? "enabled" : "disabled")
-                    + " machting achievement with the name " + args.getJoinedStrings(0) + " found!");
-        }
-        return template;
+                .findFirst().orElseThrow(() -> new CommandException("No " + (enabled ? "enabled" : "disabled")
+                        + " machting achievement with the name " + args.getJoinedStrings(0) + " found!"));
     }
 
     @Command(
