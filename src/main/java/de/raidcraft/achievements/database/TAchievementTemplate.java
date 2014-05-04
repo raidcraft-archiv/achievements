@@ -5,7 +5,6 @@ import com.avaje.ebean.validation.NotNull;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.api.achievement.AchievementTemplate;
-import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.Table;
 /**
  * @author Silthus
  */
-@Data
 @Entity
 @Table(name = "achievements_templates")
 public class TAchievementTemplate {
@@ -65,4 +63,84 @@ public class TAchievementTemplate {
     private boolean enabled;
     private boolean secret;
     private boolean broadcasting;
+
+    public int getId() {
+
+        return id;
+    }
+
+    public void setId(int id) {
+
+        this.id = id;
+    }
+
+    public String getIdentifier() {
+
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+
+        this.identifier = identifier;
+    }
+
+    public String getDisplayName() {
+
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+
+        this.displayName = displayName;
+    }
+
+    public String getDescription() {
+
+        return description;
+    }
+
+    public void setDescription(String description) {
+
+        this.description = description;
+    }
+
+    public int getPoints() {
+
+        return points;
+    }
+
+    public void setPoints(int points) {
+
+        this.points = points;
+    }
+
+    public boolean isEnabled() {
+
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+
+        this.enabled = enabled;
+    }
+
+    public boolean isSecret() {
+
+        return secret;
+    }
+
+    public void setSecret(boolean secret) {
+
+        this.secret = secret;
+    }
+
+    public boolean isBroadcasting() {
+
+        return broadcasting;
+    }
+
+    public void setBroadcasting(boolean broadcasting) {
+
+        this.broadcasting = broadcasting;
+    }
 }

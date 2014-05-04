@@ -28,7 +28,7 @@ public class AchievementPlayer extends AbstractAchievementHolder<Player> {
     protected CaseInsensitiveMap<Achievement<Player>> loadAchievements() {
 
         AchievementManager manager = RaidCraft.getComponent(AchievementManager.class);
-        TAchievementHolder holder = TAchievementHolder.load(getUniqueIdentifier(), this);
+        TAchievementHolder holder = TAchievementHolder.load(this);
         return new CaseInsensitiveMap<>(holder.getAchievements().stream()
                 .map(entry -> {
                     try {
