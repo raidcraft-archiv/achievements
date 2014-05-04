@@ -30,18 +30,18 @@ public class TAchievementHolder {
 
         EbeanServer database = RaidCraft.getDatabase(AchievementPlugin.class);
         TAchievementHolder tableEntry = database.find(TAchievementHolder.class).where()
-                .eq("uniqueId", holder.getUniqueIdentifier()).findUnique();
+                .eq("uuid", holder.getUniqueIdentifier()).findUnique();
         if (tableEntry == null) {
             tableEntry = new TAchievementHolder();
             tableEntry.setName(holder.getDisplayName());
-            tableEntry.setUniqueId(holder.getUniqueIdentifier());
+            tableEntry.setUuid(holder.getUniqueIdentifier());
             tableEntry.setPoints(holder.getTotalPoints());
             database.save(tableEntry);
         }
         return tableEntry;
     }
 
-    public static <T> void save(AchievementHolder<T> holder) {
+    public static void save(AchievementHolder<?> holder) {
 
         holder.getAchievements().forEach(Achievement::save);
         TAchievementHolder entry = load(holder);
@@ -50,7 +50,7 @@ public class TAchievementHolder {
         RaidCraft.getDatabase(AchievementPlugin.class).update(entry);
     }
 
-    public static <T> void delete(AchievementHolder<T> holder) {
+    public static void delete(AchievementHolder holder) {
 
         RaidCraft.getDatabase(AchievementPlugin.class).delete(load(holder));
     }
@@ -58,7 +58,7 @@ public class TAchievementHolder {
     @Id
     private int id;
     @Column(unique = true)
-    private UUID uniqueId;
+    private UUID uuid;
     private String name;
     private int points;
     @JoinColumn(name = "holder_id")
