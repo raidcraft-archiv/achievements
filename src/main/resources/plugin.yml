@@ -7,12 +7,12 @@ website: http://www.raid-craft.de
 depend: [RaidCraft-API]
 database: true
 permissions:
-  rcskills.player:
+  rcachievements.player:
       description: Gives access to all relevant player commands.
       default: false
       children:
         rcachievements.cmd.top: true
-  rcskills.mod:
+  rcachievements.mod:
     description: Grants aditional command permissions for moderators
     default: false
     children:
@@ -22,7 +22,7 @@ permissions:
       rcachievements.achievement.disable: true
       rcachievements.reload: true
       rcachievements.gain-disabled: true
-  rcskills.admin:
+  rcachievements.admin:
     description: Grants all rcskills permissions.
     default: false
     children:
