@@ -5,6 +5,7 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import de.raidcraft.achievements.AchievementPlugin;
+import de.raidcraft.achievements.config.YAMLAchievementTemplate;
 import de.raidcraft.api.achievement.Achievement;
 import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.achievement.AchievementTemplate;
@@ -17,6 +18,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.function.Predicate;
 
 /**
  * @author Silthus
@@ -66,12 +68,17 @@ public class AdminCommands {
         SimpleConfiguration<AchievementPlugin> config = new SimpleConfiguration<>(plugin, file);
         config.set("name", args.getJoinedStrings(1));
         config.set("points", args.getFlagInteger('p', 10));
-        config.set("creator", sender.getName());
+
         config.set("enabled", args.hasFlag('e'));
         config.set("broadcasting", !args.hasFlag('b'));
         config.set("secret", args.hasFlag('s'));
         config.set("trigger.0.type", "player.move");
         Location location = ((Player) sender).getLocation();
+        config.set("meta.creator", sender.getName());
+        config.set("meta.location.world", location.getWorld().getName());
+        config.set("meta.location.x", location.getBlockX());
+        config.set("meta.location.y", location.getBlockY());
+        config.set("meta.location.z", location.getBlockZ());
         config.set("trigger.0.world", location.getWorld().getName());
         config.set("trigger.0.x", location.getBlockX());
         config.set("trigger.0.y", location.getBlockY());
@@ -91,7 +98,7 @@ public class AdminCommands {
     @CommandPermissions("rcachievements.achievement.enable")
     public void enable(CommandContext args, CommandSender sender) throws CommandException {
 
-        AchievementTemplate template = getMatchingTemplate(args, false);
+        AchievementTemplate template = getMatchingTemplate(args, achievement -> !achievement.isEnabled());
         template.setEnabled(true);
         sender.sendMessage(ChatColor.GREEN + "Enabled the achievement: " + ChatColor.UNDERLINE + template.getDisplayName()
                 + ChatColor.RESET + "(" + ChatColor.YELLOW + template.getIdentifier() + ChatColor.RESET + ")");
@@ -105,20 +112,19 @@ public class AdminCommands {
     @CommandPermissions("rcachievements.achievement.disable")
     public void disable(CommandContext args, CommandSender sender) throws CommandException {
 
-        AchievementTemplate template = getMatchingTemplate(args, true);
+        AchievementTemplate template = getMatchingTemplate(args, AchievementTemplate::isEnabled);
         template.setEnabled(false);
         sender.sendMessage(ChatColor.RED + "Disabled the achievement: " + ChatColor.UNDERLINE + template.getDisplayName()
                 + ChatColor.RESET + "(" + ChatColor.YELLOW + template.getIdentifier() + ChatColor.RESET + ")");
     }
 
-    private AchievementTemplate getMatchingTemplate(CommandContext args, boolean enabled) throws CommandException {
+    private AchievementTemplate getMatchingTemplate(CommandContext args, Predicate<AchievementTemplate> predicate) throws CommandException {
 
         return plugin.getAchievementManager().getAchievements().stream()
-                .filter(achievement -> achievement.isEnabled() == enabled)
+                .filter(predicate)
                 .filter(achievement -> achievement.getIdentifier().startsWith(args.getString(0).toLowerCase())
                         || achievement.getDisplayName().toLowerCase().startsWith(args.getJoinedStrings(0).toLowerCase()))
-                .findFirst().orElseThrow(() -> new CommandException("No " + (enabled ? "enabled" : "disabled")
-                        + " machting achievement with the name " + args.getJoinedStrings(0) + " found!"));
+                .findFirst().orElseThrow(() -> new CommandException("No machting achievement with the name " + args.getJoinedStrings(0) + " found!"));
     }
 
     @Command(
@@ -130,7 +136,7 @@ public class AdminCommands {
     @CommandPermissions("rcachievements.achievement.give")
     public void give(CommandContext args, CommandSender sender) throws CommandException {
 
-        AchievementTemplate template = getMatchingTemplate(args, true);
+        AchievementTemplate template = getMatchingTemplate(args, achievementTemplate -> true);
         Player player = Bukkit.getPlayer(args.getFlag('p'));
         if (player == null) throw new CommandException("No player with the name " + args.getFlag('p') + " found!");
         AchievementHolder<Player> holder = plugin.getAchievementManager().getAchievementHolder(player.getUniqueId(), player);
@@ -148,7 +154,7 @@ public class AdminCommands {
     @CommandPermissions("rcachievements.achievement.remove")
     public void remove(CommandContext args, CommandSender sender) throws CommandException {
 
-        AchievementTemplate template = getMatchingTemplate(args, true);
+        AchievementTemplate template = getMatchingTemplate(args, achievementTemplate -> true);
         Player player = Bukkit.getPlayer(args.getFlag('p'));
         if (player == null) throw new CommandException("No player with the name " + args.getFlag('p') + " found!");
         AchievementHolder<Player> holder = plugin.getAchievementManager().getAchievementHolder(player.getUniqueId(), player);
@@ -172,5 +178,19 @@ public class AdminCommands {
                 return ChatColor.YELLOW + entry.getDisplayName() + ChatColor.GRAY + " [" + entry.getIdentifier() + "]";
             }
         }.display(sender, plugin.getAchievementManager().getAchievements(), args.getFlagInteger('p', 1));
+    }
+
+    @Command(
+            aliases = {"warp", "tp", "teleport"},
+            desc = "Warps to the achievement creation location",
+            min = 1
+    )
+    @CommandPermissions("rcachievement.cmd.teleport")
+    public void warp(CommandContext args, CommandSender sender) throws CommandException {
+
+        AchievementTemplate template = getMatchingTemplate(args, achievementTemplate -> true);
+        if (template instanceof YAMLAchievementTemplate) {
+            ((YAMLAchievementTemplate) template).teleport((Player) sender);
+        }
     }
 }

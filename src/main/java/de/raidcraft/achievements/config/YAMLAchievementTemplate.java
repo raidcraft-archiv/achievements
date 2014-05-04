@@ -14,7 +14,11 @@ import de.raidcraft.api.action.trigger.TriggerFactory;
 import de.raidcraft.api.action.trigger.TriggerManager;
 import de.raidcraft.api.config.ConfigurationBase;
 import lombok.NonNull;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,6 +90,27 @@ public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
     public <T> Achievement<T> createAchievement(AchievementHolder<T> holder) {
 
         return RaidCraft.getComponent(AchievementManager.class).getAchievement(holder, this);
+    }
+
+    public String getCreator() {
+
+        return config.getString("meta.creator");
+    }
+
+    public void teleport(Player player) {
+
+        if (config.isConfigurationSection("meta.location")) {
+            Location location = new Location(
+                    Bukkit.getWorld(config.getString("meta.location.world", player.getWorld().getName())),
+                    config.getInt("meta.location.x"),
+                    config.getInt("meta.location.y"),
+                    config.getInt("meta.location.z")
+            );
+            player.teleport(location);
+            player.sendMessage(ChatColor.GREEN + "You have been warped to the location of " + getDisplayName());
+        } else {
+            player.sendMessage(ChatColor.RED + "No creation location available!");
+        }
     }
 
     @Override
