@@ -35,7 +35,6 @@ public class TAchievementHolder {
             tableEntry = new TAchievementHolder();
             tableEntry.setUuid(holder.getUniqueIdentifier());
             tableEntry.setDisplayName(holder.getDisplayName());
-            tableEntry.setPoints(holder.getTotalPoints());
             database.save(tableEntry);
         }
         return tableEntry;
