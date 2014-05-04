@@ -8,11 +8,11 @@ import de.raidcraft.achievements.database.TAchievementTemplate;
 import de.raidcraft.achievements.listener.AchievementListener;
 import de.raidcraft.achievements.listener.PlayerListener;
 import de.raidcraft.api.BasePlugin;
-import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.action.requirement.Requirement;
 import de.raidcraft.api.action.requirement.RequirementFactory;
 import de.raidcraft.api.action.trigger.TriggerManager;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +57,12 @@ public class AchievementPlugin extends BasePlugin {
 
         RequirementFactory factory = RaidCraft.getComponent(RequirementFactory.class);
 
-        factory.registerRequirement(this, "holder.has-achievement", new Requirement<AchievementHolder<?>>() {
+        factory.registerRequirement(this, "holder.has-achievement", new Requirement<Player>() {
             @Override
-            public boolean test(AchievementHolder<?> holder) {
+            public boolean test(Player player) {
 
-                return !getConfig().isSet("achievement") || holder.hasAchievement(getConfig().getString("achievement"));
+                return !getConfig().isSet("achievement")
+                        || getAchievementManager().getAchievementHolder(player).hasAchievement(getConfig().getString("achievement"));
             }
         });
     }
