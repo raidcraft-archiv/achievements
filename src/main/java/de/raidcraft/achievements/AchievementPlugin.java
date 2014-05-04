@@ -5,11 +5,13 @@ import de.raidcraft.achievements.commands.BaseCommands;
 import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.achievements.database.TAchievementTemplate;
+import de.raidcraft.achievements.listener.AchievementListener;
 import de.raidcraft.achievements.listener.PlayerListener;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.action.requirement.Requirement;
 import de.raidcraft.api.action.requirement.RequirementFactory;
+import de.raidcraft.api.action.trigger.TriggerManager;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ public class AchievementPlugin extends BasePlugin {
 
     @Override
     public void enable() {
+
+        TriggerManager.getInstance().registerTrigger(this, new AchievementListener());
 
         achievementManager = new AchievementManager(this);
         registerCommands(BaseCommands.class);
