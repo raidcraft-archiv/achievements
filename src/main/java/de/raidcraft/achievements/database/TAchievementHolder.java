@@ -33,8 +33,8 @@ public class TAchievementHolder {
                 .eq("uuid", holder.getUniqueIdentifier()).findUnique();
         if (tableEntry == null) {
             tableEntry = new TAchievementHolder();
-            tableEntry.setName(holder.getDisplayName());
             tableEntry.setUuid(holder.getUniqueIdentifier());
+            tableEntry.setDisplayName(holder.getDisplayName());
             tableEntry.setPoints(holder.getTotalPoints());
             database.save(tableEntry);
         }
@@ -45,7 +45,7 @@ public class TAchievementHolder {
 
         holder.getAchievements().forEach(Achievement::save);
         TAchievementHolder entry = load(holder);
-        entry.setName(holder.getDisplayName());
+        entry.setDisplayName(holder.getDisplayName());
         entry.setPoints(holder.getTotalPoints());
         RaidCraft.getDatabase(AchievementPlugin.class).update(entry);
     }
@@ -59,7 +59,7 @@ public class TAchievementHolder {
     private int id;
     @Column(unique = true)
     private UUID uuid;
-    private String name;
+    private String displayName;
     private int points;
     @JoinColumn(name = "holder_id")
     @OneToMany(cascade = CascadeType.REMOVE)

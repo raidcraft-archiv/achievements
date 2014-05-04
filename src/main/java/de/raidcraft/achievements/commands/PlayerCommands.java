@@ -39,7 +39,7 @@ public class PlayerCommands {
             public String format(TAchievementHolder entry) {
 
                 return String.valueOf(ChatColor.AQUA) + getCount() + ". "
-                        + ChatColor.YELLOW + entry.getName()
+                        + ChatColor.YELLOW + entry.getDisplayName()
                         + "\t\t\t\t" + ChatColor.GREEN + entry.getPoints();
             }
         }.display(sender, list, args.getFlagInteger('p', 1));
