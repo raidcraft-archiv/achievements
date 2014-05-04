@@ -33,14 +33,14 @@ public class PlayerCommands {
     public void toplist(CommandContext args, CommandSender sender) throws CommandException {
 
         List<TAchievementHolder> list = plugin.getDatabase().find(TAchievementHolder.class).orderBy("points").findList();
-        new PaginatedResult<TAchievementHolder>("Player\t\t|\t\tPoints") {
+        new PaginatedResult<TAchievementHolder>("Platz. Spieler (Punkte)") {
 
             @Override
             public String format(TAchievementHolder entry) {
 
                 return String.valueOf(ChatColor.AQUA) + getCount() + ". "
-                        + ChatColor.YELLOW + entry.getDisplayName()
-                        + "\t\t\t\t" + ChatColor.GREEN + entry.getPoints();
+                        + ChatColor.YELLOW + entry.getDisplayName() + ChatColor.AQUA
+                        + " (" + ChatColor.GREEN + entry.getPoints() + ChatColor.AQUA + ")";
             }
         }.display(sender, list, args.getFlagInteger('p', 1));
     }

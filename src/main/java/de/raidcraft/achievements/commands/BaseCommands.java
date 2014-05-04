@@ -38,11 +38,11 @@ public class BaseCommands {
         }
         // TODO: make fancy with custom inventory
         AchievementHolder<Player> holder = plugin.getAchievementManager().getAchievementHolder(((Player) sender).getUniqueId(), (Player) sender);
-        new PaginatedResult<Achievement<Player>>("Achievement\t\t\t|\tDate") {
+        new PaginatedResult<Achievement<Player>>("Datum: Achievement") {
             @Override
             public String format(Achievement<Player> entry) {
 
-                return ChatColor.AQUA + entry.getDisplayName() + "\t\t\t\t\t" + ChatColor.YELLOW + entry.getCompletionDate();
+                return ChatColor.YELLOW + "" + entry.getCompletionDate() + ": " + ChatColor.AQUA + entry.getDisplayName();
             }
         }.display(sender, holder.getCompletedAchievements().stream()
                 .sorted((el, o) -> el.getCompletionDate().compareTo(o.getCompletionDate())).collect(Collectors.toList()),
