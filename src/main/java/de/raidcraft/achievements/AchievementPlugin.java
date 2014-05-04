@@ -28,7 +28,8 @@ public class AchievementPlugin extends BasePlugin {
     @Override
     public void enable() {
 
-        TriggerManager.getInstance().registerTrigger(this, new AchievementListener());
+        registerTrigger();
+        registerRequirements();
 
         achievementManager = new AchievementManager(this);
         registerCommands(BaseCommands.class);
@@ -45,6 +46,11 @@ public class AchievementPlugin extends BasePlugin {
     public void reload() {
 
         getAchievementManager().reload();
+    }
+
+    private void registerTrigger() {
+
+        TriggerManager.getInstance().registerTrigger(this, new AchievementListener());
     }
 
     private void registerRequirements() {
