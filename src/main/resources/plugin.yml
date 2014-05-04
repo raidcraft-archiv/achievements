@@ -1,4 +1,4 @@
-main: de.raidcraft.achievements.AchievementsPlugin
+main: de.raidcraft.achievements.AchievementPlugin
 name: RCAchievements
 version: ${project.version}#${build.number}
 description: Implementation of the achievements API.
