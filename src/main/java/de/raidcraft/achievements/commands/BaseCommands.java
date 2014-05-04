@@ -37,7 +37,7 @@ public class BaseCommands {
             throw new CommandException("Only players can execute this command.");
         }
         // TODO: make fancy with custom inventory
-        AchievementHolder<Player> holder = plugin.getAchievementManager().getAchievementHolder(((Player) sender).getUniqueId(), (Player) sender);
+        AchievementHolder<Player> holder = plugin.getAchievementManager().getAchievementHolder((Player) sender);
         new PaginatedResult<Achievement<Player>>("Datum: Achievement") {
             @Override
             public String format(Achievement<Player> entry) {
