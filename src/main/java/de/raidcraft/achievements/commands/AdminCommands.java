@@ -185,7 +185,7 @@ public class AdminCommands {
             desc = "Warps to the achievement creation location",
             min = 1
     )
-    @CommandPermissions("rcachievement.cmd.teleport")
+    @CommandPermissions("rcachievement.achievement.teleport")
     public void warp(CommandContext args, CommandSender sender) throws CommandException {
 
         AchievementTemplate template = getMatchingTemplate(args, achievementTemplate -> true);
