@@ -23,7 +23,7 @@ permissions:
       rcachievements.achievement.disable: true
       rcachievements.reload: true
       rcachievements.gain-disabled: true
-      rcachievements.cmd.listall: true
+      rcachievements.achievement.listall: true
       rcachievement.cmd.teleport: true
   rcachievements.admin:
     description: Grants all rcskills permissions.
