@@ -20,7 +20,7 @@ public class BaseCommands {
     }
 
     @Command(
-            aliases = {"achievements", "rca"},
+            aliases = {"achievements", "rca", "erfolge"},
             desc = "Base player command for achievements"
     )
     @NestedCommand(value = PlayerCommands.class, executeBody = false)
