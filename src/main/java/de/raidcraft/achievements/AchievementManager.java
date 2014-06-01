@@ -3,6 +3,7 @@ package de.raidcraft.achievements;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.achievements.PlayerAchievement;
 import de.raidcraft.achievements.config.YAMLAchievementTemplate;
+import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.achievements.database.TAchievementTemplate;
 import de.raidcraft.achievements.holder.AchievementPlayer;
 import de.raidcraft.api.Component;
@@ -158,6 +159,12 @@ public final class AchievementManager implements Component {
     public AchievementHolder<Player> getAchievementHolder(Player player) {
 
         return getAchievementHolder(player.getUniqueId(), player);
+    }
+
+    public AchievementHolder<TAchievementHolder> getAchievementHolder(String name) {
+
+        TAchievementHolder holder = plugin.getDatabase().find(TAchievementHolder.class).where().istartsWith("displayName", name).findUnique();
+        return getAchievementHolder(holder.getUuid(), holder);
     }
 
     @SneakyThrows

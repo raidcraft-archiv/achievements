@@ -55,7 +55,7 @@ public class PlayerCommands {
     @Command(
             aliases = {"list"},
             desc = "Lists gained achievements",
-            flags = "p:"
+            flags = "p:h:"
     )
     @CommandPermissions("rcachievements.cmd.list")
     public void list(CommandContext args, CommandSender sender) throws CommandException {
@@ -63,11 +63,19 @@ public class PlayerCommands {
         if (!(sender instanceof Player)) {
             throw new CommandException("Only players can execute this command.");
         }
+        if (args.hasFlag('h') && !sender.hasPermission("rcachievements.cmd.list.other")) {
+            throw new CommandException("You dont have the Permission to show achievements of other players.");
+        }
         // TODO: make fancy with custom inventory
-        AchievementHolder<Player> holder = plugin.getAchievementManager().getAchievementHolder((Player) sender);
-        new PaginatedResult<Achievement<Player>>("Datum: Achievement") {
+        AchievementHolder<?> holder;
+        if (args.hasFlag('h')) {
+            holder = plugin.getAchievementManager().getAchievementHolder(args.getFlag('h'));
+        } else {
+            holder = plugin.getAchievementManager().getAchievementHolder((Player) sender);
+        }
+        new PaginatedResult<Achievement<?>>("Datum: Achievement") {
             @Override
-            public String format(Achievement<Player> entry) {
+            public String format(Achievement<?> entry) {
 
                 return ChatColor.YELLOW + "" + entry.getCompletionDate().toLocalDateTime()
                         .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
