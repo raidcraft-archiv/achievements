@@ -76,7 +76,7 @@ public final class AchievementManager implements Component {
         // recurse over all sub directories
         fileList.stream()
                 .filter(File::isDirectory)
-                .forEach(dir -> loadFiles((base.equals("") ? "" : ".") + dir.getName().toLowerCase(), dir.listFiles()));
+                .forEach(dir -> loadFiles(base + (base.equals("") ? "" : ".") + dir.getName().toLowerCase(), dir.listFiles()));
     }
 
     private void loadAchievement(String identifier, File file) {
