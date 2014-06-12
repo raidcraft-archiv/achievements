@@ -18,8 +18,10 @@ public class PlayerAchievement extends AbstractAchievement<Player> {
 
     @Override
     public void save() {
-
-        TAchievement.save(this);
+        
+        if (isCompleted()) {
+            TAchievement.save(this);
+        }
     }
 
     @Override
