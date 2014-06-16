@@ -17,13 +17,9 @@ import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Silthus
@@ -51,39 +47,23 @@ public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
     @Override
     protected Collection<Requirement<?>> loadRequirements() {
 
-        ConfigurationSection requirements = config.getConfigurationSection("requirements");
-        if (requirements == null) return new ArrayList<>();
-        return requirements.getKeys(false).stream()
-                .map(key -> RaidCraft.getComponent(RequirementFactory.class)
-                        .create(requirements.getString(key + ".type"), requirements.getConfigurationSection(key)))
-                .collect(Collectors.toList());
+        return RaidCraft.getComponent(RequirementFactory.class).createRequirements(config.getConfigurationSection("requirements"));
     }
 
     @Override
     protected Collection<Action<?>> loadActions() {
 
-        ConfigurationSection actions = config.getConfigurationSection("actions");
-        if (actions == null) return new ArrayList<>();
-        return actions.getKeys(false).stream()
-                .map(key -> RaidCraft.getComponent(ActionFactory.class)
-                        .create(actions.getString(key + ".type"), actions.getConfigurationSection(key)))
-                .collect(Collectors.toList());
+        return RaidCraft.getComponent(ActionFactory.class).createActions(config.getConfigurationSection("actions"));
     }
 
     @Override
     protected Collection<TriggerFactory> loadTrigger() {
 
-        ConfigurationSection trigger = config.getConfigurationSection("trigger");
-        List<TriggerFactory> list = new ArrayList<>();
-        if (trigger != null) {
-            list = trigger.getKeys(false).stream()
-                    .map(key -> TriggerManager.getInstance().getTrigger(trigger.getString(key + ".type"), trigger.getConfigurationSection(key)))
-                    .collect(Collectors.toList());
-        }
-        if (list.isEmpty()) {
+        Collection<TriggerFactory> trigger = TriggerManager.getInstance().createTriggerFactories(config.getConfigurationSection("trigger"));
+        if (trigger.isEmpty()) {
             RaidCraft.LOGGER.warning("The achievement " + getIdentifier() + " has no trigger defined!");
         }
-        return list;
+        return trigger;
     }
 
     @Override
