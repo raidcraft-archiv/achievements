@@ -17,6 +17,12 @@ public class PlayerAchievement extends AbstractAchievement<Player> {
     }
 
     @Override
+    public Class<Player> getTriggerEntityType() {
+
+        return Player.class;
+    }
+
+    @Override
     public void save() {
         
         if (isCompleted()) {
