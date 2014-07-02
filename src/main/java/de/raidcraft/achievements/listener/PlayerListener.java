@@ -5,6 +5,7 @@ import de.raidcraft.api.achievement.Achievement;
 import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.achievement.events.AchievementGainEvent;
 import de.raidcraft.api.language.Translator;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -36,14 +37,13 @@ public class PlayerListener implements Listener {
             Arrays.asList(Bukkit.getOnlinePlayers()).forEach(player -> {
                         if (player.equals(event.getAchievement().getHolder().getType())) {
                             Translator.msg(AchievementPlugin.class, player, "achievement.get",
-                                    ChatColor.YELLOW + "Du hast den Erfolg " + ChatColor.BLUE + ChatColor.UNDERLINE +
-                                            "{0}" + ChatColor.RESET + ChatColor.YELLOW + " erhalten.",
+                                    new FancyMessage().color(ChatColor.YELLOW).text("Du hast den Erfolg ").achievementTooltip("%s").text(" erhalten.").toJSONString(),
                                     event.getAchievement().getDisplayName()
                             );
                         } else {
                             Translator.msg(AchievementPlugin.class, player, "achievement.broadcast",
-                                    ChatColor.GREEN + "{0}" + ChatColor.YELLOW + " hat den Erfolg " + ChatColor.BLUE + ChatColor.UNDERLINE +
-                                            "{1}" + ChatColor.RESET + ChatColor.YELLOW + " erhalten.",
+                                    new FancyMessage().color(ChatColor.AQUA).text("%s ").color(ChatColor.YELLOW)
+                                            .text("%s hat den Erfolg ").achievementTooltip("%s").text(" erhalten.").toJSONString(),
                                     event.getAchievement().getHolder().getDisplayName(),
                                     event.getAchievement().getDisplayName()
                             );
