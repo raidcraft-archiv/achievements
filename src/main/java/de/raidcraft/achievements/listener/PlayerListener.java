@@ -37,15 +37,24 @@ public class PlayerListener implements Listener {
             Arrays.asList(Bukkit.getOnlinePlayers()).forEach(player -> {
                         if (player.equals(event.getAchievement().getHolder().getType())) {
                             Translator.msg(AchievementPlugin.class, player, "achievement.get",
-                                    new FancyMessage().color(ChatColor.YELLOW).text("Du hast den Erfolg ").achievementTooltip("%s").text(" erhalten.").toJSONString(),
-                                    event.getAchievement().getDisplayName()
+                                    new FancyMessage()
+                                            .color(ChatColor.YELLOW).text("Du hast den Erfolg ")
+                                            .color(ChatColor.GREEN)
+                                            .then("[" + event.getAchievement().getDisplayName() + "]")
+                                                .color(ChatColor.DARK_PURPLE)
+                                                .tooltip(event.getAchievement().getTemplate().getDescription())
+                                            .then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
                             );
                         } else {
                             Translator.msg(AchievementPlugin.class, player, "achievement.broadcast",
-                                    new FancyMessage().color(ChatColor.AQUA).text("%s ").color(ChatColor.YELLOW)
-                                            .text("%s hat den Erfolg ").achievementTooltip("%s").text(" erhalten.").toJSONString(),
-                                    event.getAchievement().getHolder().getDisplayName(),
-                                    event.getAchievement().getDisplayName()
+                                    new FancyMessage()
+                                            .color(ChatColor.AQUA).text(event.getAchievement().getHolder().getDisplayName())
+                                            .color(ChatColor.YELLOW).text(" hat den Erfolg ")
+                                            .color(ChatColor.GREEN)
+                                            .then("[" + event.getAchievement().getDisplayName() + "]")
+                                                .color(ChatColor.DARK_PURPLE)
+                                                .tooltip(event.getAchievement().getTemplate().getDescription())
+                                            .then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
                             );
                         }
                     }
