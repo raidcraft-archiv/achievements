@@ -7,8 +7,10 @@ import de.raidcraft.api.achievement.AbstractAchievementTemplate;
 import de.raidcraft.api.achievement.Achievement;
 import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.action.action.Action;
+import de.raidcraft.api.action.action.ActionException;
 import de.raidcraft.api.action.action.ActionFactory;
 import de.raidcraft.api.action.requirement.Requirement;
+import de.raidcraft.api.action.requirement.RequirementException;
 import de.raidcraft.api.action.requirement.RequirementFactory;
 import de.raidcraft.api.action.trigger.TriggerFactory;
 import de.raidcraft.api.action.trigger.TriggerManager;
@@ -19,6 +21,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -47,13 +50,23 @@ public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
     @Override
     protected Collection<Requirement<?>> loadRequirements() {
 
-        return RaidCraft.getComponent(RequirementFactory.class).createRequirements(config.getConfigurationSection("requirements"));
+        try {
+            return RaidCraft.getComponent(RequirementFactory.class).createRequirements(config.getConfigurationSection("requirements"));
+        } catch (RequirementException e) {
+            RaidCraft.LOGGER.warning(e.getMessage() + " in " + getIdentifier());
+        }
+        return new ArrayList<>();
     }
 
     @Override
     protected Collection<Action<?>> loadActions() {
 
-        return RaidCraft.getComponent(ActionFactory.class).createActions(config.getConfigurationSection("actions"));
+        try {
+            return RaidCraft.getComponent(ActionFactory.class).createActions(config.getConfigurationSection("actions"));
+        } catch (ActionException e) {
+            RaidCraft.LOGGER.warning(e.getMessage() + " in " + getIdentifier());
+        }
+        return new ArrayList<>();
     }
 
     @Override
