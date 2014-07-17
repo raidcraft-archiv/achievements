@@ -4,6 +4,7 @@ import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.api.achievement.AbstractAchievement;
 import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.achievement.AchievementTemplate;
+import de.raidcraft.api.action.requirement.Requirement;
 import org.bukkit.entity.Player;
 
 /**
@@ -24,9 +25,12 @@ public class PlayerAchievement extends AbstractAchievement<Player> {
 
     @Override
     public void save() {
-        
+
         if (isCompleted()) {
             TAchievement.save(this);
+            getApplicableRequirements().forEach(requirement -> requirement.delete(getHolder().getType()));
+        } else {
+            getApplicableRequirements().forEach(Requirement::save);
         }
     }
 
@@ -34,5 +38,6 @@ public class PlayerAchievement extends AbstractAchievement<Player> {
     public void delete() {
 
         TAchievement.delete(this);
+        getApplicableRequirements().forEach(requirement -> requirement.delete(getHolder().getType()));
     }
 }
