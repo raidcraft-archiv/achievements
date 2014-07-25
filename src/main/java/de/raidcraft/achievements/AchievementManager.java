@@ -56,13 +56,12 @@ public final class AchievementManager implements Component {
         loadFiles("", new File(plugin.getDataFolder(), "achievements").listFiles());
         plugin.getLogger().info("Loaded " + registeredTemplates.size() + " achievements...");
         // lets check all online players and reregister their listeners
-        Arrays.asList(Bukkit.getOnlinePlayers()).forEach(player -> {
-
+        for (Player player : Bukkit.getOnlinePlayers()) {
             AchievementHolder<Player> holder = getAchievementHolder(player);
             // this will trigger all achievements to start listening
             plugin.getAchievementManager().getAchievements().forEach(holder::addAchievement);
             holder.getAchievements().forEach(Achievement::registerListeners);
-        });
+        }
     }
 
     private void loadFiles(String base, File[] files) {
@@ -97,10 +96,9 @@ public final class AchievementManager implements Component {
     public void unload() {
 
         // first unregister all listeners
-        Arrays.asList(Bukkit.getOnlinePlayers()).forEach(
-                player -> getAchievementHolder(player).getAchievements()
-                        .forEach(Achievement::unregisterListeners)
-        );
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            getAchievementHolder(player).getAchievements().forEach(Achievement::unregisterListeners);
+        }
         registeredTemplates.clear();
         cachedHolders.clear();
     }
