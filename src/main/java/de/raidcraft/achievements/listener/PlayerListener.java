@@ -15,8 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.Arrays;
-
 /**
  * @author Silthus
  */
@@ -34,31 +32,30 @@ public class PlayerListener implements Listener {
 
         // broadcast if wanted
         if (event.getAchievement().getTemplate().isBroadcasting()) {
-            Arrays.asList(Bukkit.getOnlinePlayers()).forEach(player -> {
-                        if (player.equals(event.getAchievement().getHolder().getType())) {
-                            Translator.msg(AchievementPlugin.class, player, "achievement.get",
-                                    new FancyMessage()
-                                            .color(ChatColor.YELLOW).text("Du hast den Erfolg ")
-                                            .color(ChatColor.GREEN)
-                                            .then("[" + event.getAchievement().getDisplayName() + "]")
-                                                .color(ChatColor.DARK_PURPLE)
-                                                .tooltip(event.getAchievement().getTemplate().getDescription())
-                                            .then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
-                            );
-                        } else {
-                            Translator.msg(AchievementPlugin.class, player, "achievement.broadcast",
-                                    new FancyMessage()
-                                            .color(ChatColor.AQUA).text(event.getAchievement().getHolder().getDisplayName())
-                                            .color(ChatColor.YELLOW).text(" hat den Erfolg ")
-                                            .color(ChatColor.GREEN)
-                                            .then("[" + event.getAchievement().getDisplayName() + "]")
-                                                .color(ChatColor.DARK_PURPLE)
-                                                .tooltip(event.getAchievement().getTemplate().getDescription())
-                                            .then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
-                            );
-                        }
-                    }
-            );
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.equals(event.getAchievement().getHolder().getType())) {
+                    Translator.msg(AchievementPlugin.class, player, "achievement.get",
+                            new FancyMessage()
+                                    .color(ChatColor.YELLOW).text("Du hast den Erfolg ")
+                                    .color(ChatColor.GREEN)
+                                    .then("[" + event.getAchievement().getDisplayName() + "]")
+                                    .color(ChatColor.DARK_PURPLE)
+                                    .tooltip(event.getAchievement().getTemplate().getDescription())
+                                    .then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
+                    );
+                } else {
+                    Translator.msg(AchievementPlugin.class, player, "achievement.broadcast",
+                            new FancyMessage()
+                                    .color(ChatColor.AQUA).text(event.getAchievement().getHolder().getDisplayName())
+                                    .color(ChatColor.YELLOW).text(" hat den Erfolg ")
+                                    .color(ChatColor.GREEN)
+                                    .then("[" + event.getAchievement().getDisplayName() + "]")
+                                    .color(ChatColor.DARK_PURPLE)
+                                    .tooltip(event.getAchievement().getTemplate().getDescription())
+                                    .then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
+                    );
+                }
+            }
         }
     }
 
