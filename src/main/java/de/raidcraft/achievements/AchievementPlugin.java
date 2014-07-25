@@ -12,6 +12,7 @@ import de.raidcraft.api.action.requirement.Requirement;
 import de.raidcraft.api.action.requirement.RequirementFactory;
 import de.raidcraft.api.action.trigger.TriggerManager;
 import lombok.Getter;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class AchievementPlugin extends BasePlugin {
 
         factory.registerRequirement(this, "holder.has-achievement", new Requirement<Player>() {
             @Override
-            public boolean test(Player player) {
+            public boolean test(Player player, ConfigurationSection config) {
 
                 return !getConfig().isSet("achievement")
                         || getAchievementManager().getAchievementHolder(player).hasGainedAchievement(getConfig().getString("achievement"));
