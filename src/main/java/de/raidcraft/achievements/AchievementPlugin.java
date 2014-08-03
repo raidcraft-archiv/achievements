@@ -32,7 +32,7 @@ public class AchievementPlugin extends BasePlugin {
         registerRequirements();
 
         achievementManager = new AchievementManager(this);
-        registerCommands(BaseCommands.class);
+        registerCommands(BaseCommands.class, getName());
         registerEvents(new PlayerListener(this));
     }
 

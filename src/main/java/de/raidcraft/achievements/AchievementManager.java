@@ -137,6 +137,15 @@ public final class AchievementManager implements Component {
         return registeredTemplates.get(identifier);
     }
 
+    public AchievementTemplate getAchievementTemplateByName(String displayName) throws AchievementException {
+        for(AchievementTemplate template : this.registeredTemplates.values()) {
+            if(template.getDisplayName().equalsIgnoreCase(displayName)) {
+                return template;
+            }
+        }
+        throw new AchievementException("No achievement template found: " + displayName);
+    }
+
     @SneakyThrows
     public <T> void registerAchievementHolder(Class<T> type, Class<? extends AchievementHolder<T>> clazz) {
 
