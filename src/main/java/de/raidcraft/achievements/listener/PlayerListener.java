@@ -5,7 +5,6 @@ import de.raidcraft.api.achievement.Achievement;
 import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.achievement.events.AchievementGainEvent;
 import de.raidcraft.api.language.Translator;
-import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -14,8 +13,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.util.Arrays;
 
 /**
  * @author Silthus
@@ -37,24 +34,33 @@ public class PlayerListener implements Listener {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.equals(event.getAchievement().getHolder().getType())) {
                     Translator.msg(AchievementPlugin.class, player, "achievement.get",
-                            new FancyMessage()
-                                    .color(ChatColor.YELLOW).text("Du hast den Erfolg ")
-                                    .color(ChatColor.GREEN)
-                                    .then("[" + event.getAchievement().getDisplayName() + "]")
-                                    .color(ChatColor.DARK_PURPLE)
-                                    .tooltip(event.getAchievement().getTemplate().getDescription())
-                                    .then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
+                            ChatColor.YELLOW + "Du hast den Erfolg" + ChatColor.GREEN +
+                                    "[" + event.getAchievement().getDisplayName() + "]"
+                                    + ChatColor.DARK_PURPLE + event.getAchievement().getTemplate().getDescription()
+                                    + ChatColor.YELLOW + " erhalten."
+                            //                            new FancyMessage()
+                            //                                    .color(ChatColor.YELLOW).text("Du hast den Erfolg ")
+                            //                                    .color(ChatColor.GREEN)
+                            //                                    .then("[" + event.getAchievement().getDisplayName() + "]")
+                            //                                    .color(ChatColor.DARK_PURPLE)
+                            //                                    .tooltip(event.getAchievement().getTemplate().getDescription())
+                            //                                    .then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
                     );
                 } else {
                     Translator.msg(AchievementPlugin.class, player, "achievement.broadcast",
-                            new FancyMessage()
-                                    .color(ChatColor.AQUA).text(event.getAchievement().getHolder().getDisplayName())
-                                    .color(ChatColor.YELLOW).text(" hat den Erfolg ")
-                                    .color(ChatColor.GREEN)
-                                    .then("[" + event.getAchievement().getDisplayName() + "]")
-                                    .color(ChatColor.DARK_PURPLE)
-                                    .tooltip(event.getAchievement().getTemplate().getDescription())
-                                    .then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
+                            ChatColor.AQUA + event.getAchievement().getHolder().getDisplayName()
+                                    + ChatColor.YELLOW + " hat den Erfolg " + ChatColor.GREEN +
+                                    "[" + event.getAchievement().getDisplayName() + "]"
+                                    + ChatColor.DARK_PURPLE + event.getAchievement().getTemplate().getDescription()
+                                    + ChatColor.YELLOW + " erhalten."
+                            //                            new FancyMessage()
+                            //                                    .color(ChatColor.AQUA).text(event.getAchievement().getHolder().getDisplayName())
+                            //                                    .color(ChatColor.YELLOW).text(" hat den Erfolg ")
+                            //                                    .color(ChatColor.GREEN)
+                            //                                    .then("[" + event.getAchievement().getDisplayName() + "]")
+                            //                                    .color(ChatColor.DARK_PURPLE)
+                            //                                    .tooltip(event.getAchievement().getTemplate().getDescription())
+                            //                                    .then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
                     );
                 }
             }
@@ -75,7 +81,7 @@ public class PlayerListener implements Listener {
             // this will trigger all achievements to start listening
             plugin.getAchievementManager().getAchievements().forEach(holder::addAchievement);
             holder.getAchievements().forEach(Achievement::registerListeners);
-        }, 100L);
+        }, 5 * 20L);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
