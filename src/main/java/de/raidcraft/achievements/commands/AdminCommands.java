@@ -79,11 +79,11 @@ public class AdminCommands {
         config.set("meta.location.x", location.getBlockX());
         config.set("meta.location.y", location.getBlockY());
         config.set("meta.location.z", location.getBlockZ());
-        config.set("trigger.0.world", location.getWorld().getName());
-        config.set("trigger.0.x", location.getBlockX());
-        config.set("trigger.0.y", location.getBlockY());
-        config.set("trigger.0.z", location.getBlockZ());
-        config.set("trigger.0.radius", args.getFlagInteger('r', 0));
+        config.set("trigger.0.args.world", location.getWorld().getName());
+        config.set("trigger.0.args.x", location.getBlockX());
+        config.set("trigger.0.args.y", location.getBlockY());
+        config.set("trigger.0.args.z", location.getBlockZ());
+        config.set("trigger.0.args.radius", args.getFlagInteger('r', 0));
         config.save();
 
         sender.sendMessage(ChatColor.GREEN + "Created achievement config in " + file.getPath());
