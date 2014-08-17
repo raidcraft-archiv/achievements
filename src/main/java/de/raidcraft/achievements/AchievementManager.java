@@ -97,7 +97,10 @@ public final class AchievementManager implements Component {
 
         // first unregister all listeners
         for (Player player : Bukkit.getOnlinePlayers()) {
-            getAchievementHolder(player).getAchievements().forEach(Achievement::unregisterListeners);
+            for (Achievement achievement : getAchievementHolder(player).getAchievements()) {
+                achievement.unregisterListeners();
+                ;
+            }
         }
         registeredTemplates.clear();
         cachedHolders.clear();
@@ -133,6 +136,16 @@ public final class AchievementManager implements Component {
             throw new AchievementException("No achievement template found: " + identifier);
         }
         return registeredTemplates.get(identifier);
+    }
+
+    public AchievementTemplate getAchievementTemplateByName(String displayName) throws AchievementException {
+
+        for (AchievementTemplate template : this.registeredTemplates.values()) {
+            if (template.getDisplayName().equalsIgnoreCase(displayName)) {
+                return template;
+            }
+        }
+        throw new AchievementException("No achievement template found: " + displayName);
     }
 
     @SneakyThrows

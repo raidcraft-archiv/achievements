@@ -7,7 +7,9 @@ import com.sk89q.minecraft.util.commands.CommandPermissions;
 import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.api.achievement.Achievement;
+import de.raidcraft.api.achievement.AchievementException;
 import de.raidcraft.api.achievement.AchievementHolder;
+import de.raidcraft.api.achievement.AchievementTemplate;
 import de.raidcraft.util.PaginatedResult;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -84,5 +86,32 @@ public class PlayerCommands {
         }.display(sender, holder.getCompletedAchievements().stream()
                         .sorted((el, o) -> el.getCompletionDate().compareTo(o.getCompletionDate())).collect(Collectors.toList()),
                 args.getFlagInteger('p', 1));
+    }
+
+    @Command(
+            aliases = {"info"},
+            desc = "Gives the descirption of a achievement",
+            min = 1,
+            usage = "<achievement_name>"
+    )
+    @CommandPermissions("rcachievements.cmd.list")
+    public void info(CommandContext args, CommandSender sender) throws CommandException {
+
+        if (!(sender instanceof Player)) {
+            throw new CommandException("Only players can execute this command.");
+        }
+        Player player = (Player) sender;
+        try {
+            String name = args.getJoinedStrings(0);
+            AchievementTemplate template = plugin.getAchievementManager().getAchievementTemplateByName(name);
+            if (template.isSecret()) {
+                throw new AchievementException("secret");
+            }
+            sender.sendMessage(template.getDescription());
+        } catch (AchievementException e) {
+            sender.sendMessage("Kein gültiger Erfolg");
+            return;
+        }
+
     }
 }
