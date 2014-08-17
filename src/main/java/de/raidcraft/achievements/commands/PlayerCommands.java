@@ -84,7 +84,7 @@ public class PlayerCommands {
                         + ": " + ChatColor.AQUA + entry.getDisplayName();
             }
         }.display(sender, holder.getCompletedAchievements().stream()
-                .sorted((el, o) -> el.getCompletionDate().compareTo(o.getCompletionDate())).collect(Collectors.toList()),
+                        .sorted((el, o) -> el.getCompletionDate().compareTo(o.getCompletionDate())).collect(Collectors.toList()),
                 args.getFlagInteger('p', 1));
     }
 
@@ -104,7 +104,7 @@ public class PlayerCommands {
         try {
             String name = args.getJoinedStrings(0);
             AchievementTemplate template = plugin.getAchievementManager().getAchievementTemplateByName(name);
-            if(template.isSecret()) {
+            if (template.isSecret()) {
                 throw new AchievementException("secret");
             }
             sender.sendMessage(template.getDescription());

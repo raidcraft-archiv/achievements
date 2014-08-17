@@ -10,8 +10,8 @@ import de.raidcraft.api.achievement.Achievement;
 import de.raidcraft.api.achievement.AchievementHolder;
 import de.raidcraft.api.achievement.AchievementTemplate;
 import de.raidcraft.api.config.SimpleConfiguration;
+import de.raidcraft.util.CommandUtil;
 import de.raidcraft.util.PaginatedResult;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -87,7 +87,9 @@ public class AdminCommands {
         config.save();
 
         sender.sendMessage(ChatColor.GREEN + "Created achievement config in " + file.getPath());
-        if (args.hasFlag('e') && args.hasFlag('m')) sender.sendMessage(ChatColor.RED + "The achievement will be loaded on the next /rcaa reload!");
+        if (args.hasFlag('e') && args.hasFlag('m')) {
+            sender.sendMessage(ChatColor.RED + "The achievement will be loaded on the next /rcaa reload!");
+        }
     }
 
     @Command(
@@ -137,8 +139,7 @@ public class AdminCommands {
     public void give(CommandContext args, CommandSender sender) throws CommandException {
 
         AchievementTemplate template = getMatchingTemplate(args, achievementTemplate -> true);
-        Player player = Bukkit.getPlayer(args.getFlag('p'));
-        if (player == null) throw new CommandException("No player with the name " + args.getFlag('p') + " found!");
+        Player player = CommandUtil.grabPlayer(args.getFlag('p'));
         AchievementHolder<Player> holder = plugin.getAchievementManager().getAchievementHolder(player.getUniqueId(), player);
         Achievement<Player> achievement = holder.addAchievement(template);
         achievement.unlock();
@@ -155,8 +156,7 @@ public class AdminCommands {
     public void remove(CommandContext args, CommandSender sender) throws CommandException {
 
         AchievementTemplate template = getMatchingTemplate(args, achievementTemplate -> true);
-        Player player = Bukkit.getPlayer(args.getFlag('p'));
-        if (player == null) throw new CommandException("No player with the name " + args.getFlag('p') + " found!");
+        Player player = CommandUtil.grabPlayer(args.getFlag('p'));
         AchievementHolder<Player> holder = plugin.getAchievementManager().getAchievementHolder(player.getUniqueId(), player);
         Achievement<Player> achievement = holder.addAchievement(template);
         achievement.remove();

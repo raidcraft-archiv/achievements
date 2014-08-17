@@ -56,7 +56,7 @@ public final class AchievementManager implements Component {
         loadFiles("", new File(plugin.getDataFolder(), "achievements").listFiles());
         plugin.getLogger().info("Loaded " + registeredTemplates.size() + " achievements...");
         // lets check all online players and reregister their listeners
-        for(Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             AchievementHolder<Player> holder = getAchievementHolder(player);
             // this will trigger all achievements to start listening
             plugin.getAchievementManager().getAchievements().forEach(holder::addAchievement);
@@ -96,9 +96,10 @@ public final class AchievementManager implements Component {
     public void unload() {
 
         // first unregister all listeners
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            for(Achievement achievement : getAchievementHolder(player).getAchievements()) {
-                achievement.unregisterListeners();;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            for (Achievement achievement : getAchievementHolder(player).getAchievements()) {
+                achievement.unregisterListeners();
+                ;
             }
         }
         registeredTemplates.clear();
@@ -138,8 +139,9 @@ public final class AchievementManager implements Component {
     }
 
     public AchievementTemplate getAchievementTemplateByName(String displayName) throws AchievementException {
-        for(AchievementTemplate template : this.registeredTemplates.values()) {
-            if(template.getDisplayName().equalsIgnoreCase(displayName)) {
+
+        for (AchievementTemplate template : this.registeredTemplates.values()) {
+            if (template.getDisplayName().equalsIgnoreCase(displayName)) {
                 return template;
             }
         }
