@@ -87,7 +87,7 @@ public final class AchievementManager implements Component {
             YAMLAchievementTemplate template = new YAMLAchievementTemplate(identifier, plugin.configure(new SimpleConfiguration<>(plugin, file)));
             registerAchievementTemplate(template);
             TAchievementTemplate.save(template);
-            plugin.getLogger().info("loaded template: " + identifier);
+            plugin.info("loaded template: " + identifier);
         } catch (DuplicateAchievementException e) {
             plugin.getLogger().warning(e.getMessage());
         }
