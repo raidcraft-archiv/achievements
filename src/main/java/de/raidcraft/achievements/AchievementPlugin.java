@@ -1,6 +1,5 @@
 package de.raidcraft.achievements;
 
-import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.commands.BaseCommands;
 import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.achievements.database.TAchievementHolder;
@@ -8,8 +7,7 @@ import de.raidcraft.achievements.database.TAchievementTemplate;
 import de.raidcraft.achievements.listener.AchievementListener;
 import de.raidcraft.achievements.listener.PlayerListener;
 import de.raidcraft.api.BasePlugin;
-import de.raidcraft.api.action.requirement.RequirementFactory;
-import de.raidcraft.api.action.trigger.TriggerManager;
+import de.raidcraft.api.action.ActionAPI;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -28,8 +26,7 @@ public class AchievementPlugin extends BasePlugin {
     @Override
     public void enable() {
 
-        registerTrigger();
-        registerRequirements();
+        registerActionAPI();
 
         achievementManager = new AchievementManager(this);
         registerCommands(BaseCommands.class);
@@ -48,18 +45,12 @@ public class AchievementPlugin extends BasePlugin {
         getAchievementManager().reload();
     }
 
-    private void registerTrigger() {
-
-        TriggerManager.getInstance().registerTrigger(this, new AchievementListener());
-    }
-
-    private void registerRequirements() {
-
-        RequirementFactory factory = RaidCraft.getComponent(RequirementFactory.class);
-
-        factory.registerRequirement(this, "holder.has-achievement", (Player player, ConfigurationSection config) -> !getConfig().isSet("achievement")
-                || getAchievementManager().getAchievementHolder(player).hasGainedAchievement(getConfig().getString("achievement")));
-    }
+	private void registerActionAPI(){
+		ActionAPI.register(this)
+				.trigger(new AchievementListener())
+				.requirement("holder.has-achievement", (Player player, ConfigurationSection config) -> !getConfig().isSet("achievement")
+						|| getAchievementManager().getAchievementHolder(player).hasGainedAchievement(getConfig().getString("achievement")));
+	}
 
     @Override
     public List<Class<?>> getDatabaseClasses() {
