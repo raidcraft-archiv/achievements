@@ -51,7 +51,7 @@ public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
     protected Collection<Requirement<?>> loadRequirements() {
 
         try {
-            return RaidCraft.getComponent(RequirementFactory.class).createRequirements(getListenerId(), config.getConfigurationSection("requirements"));
+            return RaidCraft.getComponent(RequirementFactory.class).createRequirements(getIdentifier(), config.getConfigurationSection("requirements"));
         } catch (RequirementException e) {
             RaidCraft.LOGGER.warning(e.getMessage() + " in " + getIdentifier());
         }
