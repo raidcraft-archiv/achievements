@@ -158,8 +158,7 @@ public class AdminCommands {
         AchievementTemplate template = getMatchingTemplate(args, achievementTemplate -> true);
         Player player = CommandUtil.grabPlayer(args.getFlag('p'));
         AchievementHolder<Player> holder = plugin.getAchievementManager().getAchievementHolder(player.getUniqueId(), player);
-        Achievement<Player> achievement = holder.addAchievement(template);
-        achievement.remove();
+        Achievement<Player> achievement = holder.removeAchievement(template);
         sender.sendMessage(ChatColor.RED + " The achievement '" + achievement.getDisplayName() + "' has been removed from: " + player.getName());
     }
 
