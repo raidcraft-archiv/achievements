@@ -22,6 +22,6 @@ public class AchievementTrigger extends Trigger implements Listener {
         // inform other achievements
         informListeners("gain", event.getAchievement().getHolder().getType(), config ->
                 !config.isSet("achievement")
-                        || config.getString("achievement").equals(event.getAchievement().getIdentifier()));
+                        || config.getString("achievement").equalsIgnoreCase(event.getAchievement().getIdentifier()));
     }
 }

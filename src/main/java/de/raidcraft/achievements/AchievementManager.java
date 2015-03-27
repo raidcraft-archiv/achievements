@@ -18,11 +18,11 @@ import de.raidcraft.util.UUIDUtil;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -81,10 +81,12 @@ public final class AchievementManager implements Component {
     private void loadAchievement(String identifier, File file) {
 
         try {
+            ConfigurationSection config = plugin.configure(new SimpleConfiguration<>(plugin, file));
+            config = de.raidcraft.util.ConfigUtil.replacePathReferences(config, identifier);
             if (!identifier.equals("")) identifier += ".";
             identifier += file.getName().toLowerCase();
             identifier = identifier.replace(".yml", "");
-            YAMLAchievementTemplate template = new YAMLAchievementTemplate(identifier, plugin.configure(new SimpleConfiguration<>(plugin, file)));
+            YAMLAchievementTemplate template = new YAMLAchievementTemplate(identifier, config);
             registerAchievementTemplate(template);
             TAchievementTemplate.save(template);
             plugin.info("loaded template: " + identifier);
@@ -99,7 +101,6 @@ public final class AchievementManager implements Component {
         for (Player player : Bukkit.getOnlinePlayers()) {
             for (Achievement achievement : getAchievementHolder(player).getAchievements()) {
                 achievement.unregisterListeners();
-                ;
             }
         }
         registeredTemplates.clear();
@@ -154,12 +155,8 @@ public final class AchievementManager implements Component {
         if (registeredHolders.containsKey(type)) {
             throw new AchievementException("Holder type " + clazz.getCanonicalName() + " for " + type.getCanonicalName() + " already exists!");
         }
-        try {
-            Constructor<? extends AchievementHolder<T>> constructor = clazz.getDeclaredConstructor(type);
-            registeredHolders.put(type, constructor);
-        } catch (NoSuchMethodException e) {
-            throw new AchievementException(e);
-        }
+        Constructor<? extends AchievementHolder<T>> constructor = clazz.getDeclaredConstructor(type);
+        registeredHolders.put(type, constructor);
     }
 
     public void unregisterHolder(Class<?> type) {
@@ -189,15 +186,11 @@ public final class AchievementManager implements Component {
         if (aClass == null) {
             throw new AchievementException("No holder for type " + type.getClass().getCanonicalName() + " found!");
         }
-        try {
-            Constructor<? extends AchievementHolder<?>> constructor = registeredHolders.get(aClass);
-            constructor.setAccessible(true);
-            AchievementHolder<T> holder = (AchievementHolder<T>) constructor.newInstance(type);
-            cachedHolders.put(uuid, holder);
-            return holder;
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new AchievementException(e);
-        }
+        Constructor<? extends AchievementHolder<?>> constructor = registeredHolders.get(aClass);
+        constructor.setAccessible(true);
+        AchievementHolder<T> holder = (AchievementHolder<T>) constructor.newInstance(type);
+        cachedHolders.put(uuid, holder);
+        return holder;
     }
 
     @SneakyThrows
@@ -206,12 +199,8 @@ public final class AchievementManager implements Component {
         if (registeredAchievements.containsKey(type)) {
             throw new AchievementException("achievement type " + clazz.getCanonicalName() + " for " + type.getCanonicalName() + " already exists!");
         }
-        try {
-            Constructor<? extends Achievement<T>> constructor = clazz.getDeclaredConstructor(AchievementHolder.class, AchievementTemplate.class);
-            registeredAchievements.put(type, constructor);
-        } catch (NoSuchMethodException e) {
-            throw new AchievementException(e);
-        }
+        Constructor<? extends Achievement<T>> constructor = clazz.getDeclaredConstructor(AchievementHolder.class, AchievementTemplate.class);
+        registeredAchievements.put(type, constructor);
     }
 
     public void unregisterAchievement(Class<?> type) {
@@ -230,13 +219,9 @@ public final class AchievementManager implements Component {
         if (aClass == null) {
             throw new AchievementException("No achievement for type " + (holder.getType().getClass().getCanonicalName() + " found!"));
         }
-        try {
-            Constructor<? extends Achievement<?>> constructor = registeredAchievements.get(aClass);
-            constructor.setAccessible(true);
-            return (Achievement<T>) constructor.newInstance(holder, template);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new AchievementException(e);
-        }
+        Constructor<? extends Achievement<?>> constructor = registeredAchievements.get(aClass);
+        constructor.setAccessible(true);
+        return (Achievement<T>) constructor.newInstance(holder, template);
     }
 
     @SneakyThrows

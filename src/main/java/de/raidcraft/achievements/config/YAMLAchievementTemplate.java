@@ -2,7 +2,6 @@ package de.raidcraft.achievements.config;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementManager;
-import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.api.achievement.AbstractAchievementTemplate;
 import de.raidcraft.api.achievement.Achievement;
 import de.raidcraft.api.achievement.AchievementHolder;
@@ -14,11 +13,11 @@ import de.raidcraft.api.action.requirement.RequirementException;
 import de.raidcraft.api.action.requirement.RequirementFactory;
 import de.raidcraft.api.action.trigger.TriggerFactory;
 import de.raidcraft.api.action.trigger.TriggerManager;
-import de.raidcraft.api.config.ConfigurationBase;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -30,9 +29,9 @@ import java.util.Collection;
 public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
 
     @NonNull
-    private final ConfigurationBase<AchievementPlugin> config;
+    private final ConfigurationSection config;
 
-    public YAMLAchievementTemplate(@NonNull String name, @NonNull ConfigurationBase<AchievementPlugin> config) {
+    public YAMLAchievementTemplate(@NonNull String name, ConfigurationSection config) {
 
         super(name, config.getString("name", name));
         this.config = config;
@@ -104,29 +103,5 @@ public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
         } else {
             player.sendMessage(ChatColor.RED + "No creation location available!");
         }
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-
-        super.setEnabled(enabled);
-        config.set("enabled", enabled);
-        config.save();
-    }
-
-    @Override
-    public void setSecret(boolean secret) {
-
-        super.setSecret(secret);
-        config.set("secret", secret);
-        config.save();
-    }
-
-    @Override
-    public void setBroadcasting(boolean broadcasting) {
-
-        super.setBroadcasting(broadcasting);
-        config.set("broadcasting", broadcasting);
-        config.save();
     }
 }
