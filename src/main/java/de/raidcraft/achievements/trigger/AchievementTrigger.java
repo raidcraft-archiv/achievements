@@ -1,4 +1,4 @@
-package de.raidcraft.achievements.listener;
+package de.raidcraft.achievements.trigger;
 
 import de.raidcraft.api.achievement.events.AchievementGainEvent;
 import de.raidcraft.api.action.trigger.Trigger;
@@ -9,9 +9,9 @@ import org.bukkit.event.Listener;
 /**
  * @author Silthus
  */
-public class AchievementListener extends Trigger implements Listener {
+public class AchievementTrigger extends Trigger implements Listener {
 
-    public AchievementListener() {
+    public AchievementTrigger() {
 
         super("achievement", "gain");
     }
