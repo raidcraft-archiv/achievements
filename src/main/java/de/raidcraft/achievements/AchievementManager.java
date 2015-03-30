@@ -2,6 +2,7 @@ package de.raidcraft.achievements;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.achievements.PlayerAchievement;
+import de.raidcraft.achievements.config.PlayerAchievementTemplate;
 import de.raidcraft.achievements.config.YAMLAchievementTemplate;
 import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.achievements.database.TAchievementTemplate;
@@ -17,7 +18,6 @@ import de.raidcraft.util.CaseInsensitiveMap;
 import de.raidcraft.util.UUIDUtil;
 import lombok.NonNull;
 import lombok.SneakyThrows;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -55,13 +55,6 @@ public final class AchievementManager implements Component {
 
         loadFiles("", new File(plugin.getDataFolder(), "achievements").listFiles());
         plugin.getLogger().info("Loaded " + registeredTemplates.size() + " achievements...");
-        // lets check all online players and reregister their listeners
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            AchievementHolder<Player> holder = getAchievementHolder(player);
-            // this will trigger all achievements to start listening
-            plugin.getAchievementManager().getAchievements().forEach(holder::addAchievement);
-            holder.getAchievements().forEach(Achievement::registerListeners);
-        }
     }
 
     private void loadFiles(String base, File[] files) {
@@ -86,8 +79,9 @@ public final class AchievementManager implements Component {
             if (!identifier.equals("")) identifier += ".";
             identifier += file.getName().toLowerCase();
             identifier = identifier.replace(".yml", "");
-            YAMLAchievementTemplate template = new YAMLAchievementTemplate(identifier, config);
+            YAMLAchievementTemplate template = new PlayerAchievementTemplate(identifier, config);
             registerAchievementTemplate(template);
+            template.registerListeners();
             TAchievementTemplate.save(template);
             plugin.info("loaded template: " + identifier);
         } catch (DuplicateAchievementException e) {
@@ -98,11 +92,7 @@ public final class AchievementManager implements Component {
     public void unload() {
 
         // first unregister all listeners
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            for (Achievement achievement : getAchievementHolder(player).getAchievements()) {
-                achievement.unregisterListeners();
-            }
-        }
+        registeredTemplates.values().forEach(AchievementTemplate::unregisterListeners);
         registeredTemplates.clear();
         cachedHolders.clear();
     }
@@ -189,6 +179,7 @@ public final class AchievementManager implements Component {
         Constructor<? extends AchievementHolder<?>> constructor = registeredHolders.get(aClass);
         constructor.setAccessible(true);
         AchievementHolder<T> holder = (AchievementHolder<T>) constructor.newInstance(type);
+        holder.load();
         cachedHolders.put(uuid, holder);
         return holder;
     }
@@ -228,5 +219,10 @@ public final class AchievementManager implements Component {
     public <T> Achievement<T> getAchievement(@NonNull T type, @NonNull AchievementTemplate template) {
 
         return getAchievement(getAchievementHolder(UUIDUtil.getUUIDfrom(type), type), template);
+    }
+
+    public void clearPlayerCache(Player player) {
+
+        cachedHolders.remove(player.getUniqueId());
     }
 }

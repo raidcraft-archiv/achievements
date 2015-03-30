@@ -26,7 +26,7 @@ import java.util.Collection;
 /**
  * @author Silthus
  */
-public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
+public abstract class YAMLAchievementTemplate<T> extends AbstractAchievementTemplate<T> {
 
     @NonNull
     private final ConfigurationSection config;
@@ -79,9 +79,11 @@ public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
     }
 
     @Override
-    public <T> Achievement<T> createAchievement(AchievementHolder<T> holder) {
+    public Achievement<T> createAchievement(AchievementHolder<T> holder) {
 
-        return RaidCraft.getComponent(AchievementManager.class).getAchievement(holder, this);
+        Achievement<T> achievement = RaidCraft.getComponent(AchievementManager.class).getAchievement(holder, this);
+        holder.addAchievement(achievement);
+        return achievement;
     }
 
     public String getCreator() {
