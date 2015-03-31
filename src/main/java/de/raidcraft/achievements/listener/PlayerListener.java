@@ -1,8 +1,7 @@
 package de.raidcraft.achievements.listener;
 
 import de.raidcraft.achievements.AchievementPlugin;
-import de.raidcraft.api.achievement.AchievementHolder;
-import de.raidcraft.api.achievement.events.AchievementGainEvent;
+import de.raidcraft.achievements.api.events.AchievementGainEvent;
 import de.raidcraft.api.language.Translator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

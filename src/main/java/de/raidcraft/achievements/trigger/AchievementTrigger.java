@@ -1,6 +1,6 @@
 package de.raidcraft.achievements.trigger;
 
-import de.raidcraft.api.achievement.events.AchievementGainEvent;
+import de.raidcraft.achievements.api.events.AchievementGainEvent;
 import de.raidcraft.api.action.trigger.Trigger;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

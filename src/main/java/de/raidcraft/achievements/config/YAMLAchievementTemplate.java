@@ -2,9 +2,9 @@ package de.raidcraft.achievements.config;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementManager;
-import de.raidcraft.api.achievement.AbstractAchievementTemplate;
-import de.raidcraft.api.achievement.Achievement;
-import de.raidcraft.api.achievement.AchievementHolder;
+import de.raidcraft.achievements.api.AbstractAchievementTemplate;
+import de.raidcraft.achievements.api.Achievement;
+import de.raidcraft.achievements.api.AchievementHolder;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.action.ActionException;
 import de.raidcraft.api.action.action.ActionFactory;

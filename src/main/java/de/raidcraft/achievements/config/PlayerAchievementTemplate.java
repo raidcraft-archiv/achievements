@@ -2,7 +2,7 @@ package de.raidcraft.achievements.config;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementManager;
-import de.raidcraft.api.achievement.Achievement;
+import de.raidcraft.achievements.api.Achievement;
 import de.raidcraft.api.action.requirement.Requirement;
 import lombok.NonNull;
 import org.bukkit.configuration.ConfigurationSection;
