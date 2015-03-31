@@ -44,12 +44,14 @@ public abstract class AbstractAchievement<T> implements Achievement<T> {
         if (!getTemplate().isEnabled() && !getHolder().hasPermission("rcachievement.ignore-disabled")) return false;
         // check if achievement is already unlocked
         if (getCompletionDate() != null) return false;
+        // add and unlock the achievement before calling the event to avoid an inifinite loop
+        getHolder().addAchievement(this);
+        this.setCompletionDate(Timestamp.from(Instant.now()));
+
         // inform other plugins that the holder gained an achievement
         AchievementGainEvent event = new AchievementGainEvent(this);
         RaidCraft.callEvent(event);
 
-        getHolder().addAchievement(this);
-        this.setCompletionDate(Timestamp.from(Instant.now()));
         // trigger all applicable actions
         getApplicableActions().forEach(action -> action.accept(getHolder().getType()));
         save();
