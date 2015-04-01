@@ -5,10 +5,10 @@ import de.raidcraft.achievements.AchievementManager;
 import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.achievements.database.TAchievementHolder;
-import de.raidcraft.api.achievement.AbstractAchievementHolder;
-import de.raidcraft.api.achievement.Achievement;
-import de.raidcraft.api.achievement.AchievementException;
-import de.raidcraft.api.achievement.AchievementTemplate;
+import de.raidcraft.achievements.api.AbstractAchievementHolder;
+import de.raidcraft.achievements.api.Achievement;
+import de.raidcraft.achievements.api.AchievementException;
+import de.raidcraft.achievements.api.AchievementTemplate;
 import de.raidcraft.util.CaseInsensitiveMap;
 
 import java.util.UUID;

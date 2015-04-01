@@ -2,9 +2,9 @@ package de.raidcraft.achievements.config;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementManager;
-import de.raidcraft.api.achievement.AbstractAchievementTemplate;
-import de.raidcraft.api.achievement.Achievement;
-import de.raidcraft.api.achievement.AchievementHolder;
+import de.raidcraft.achievements.api.AbstractAchievementTemplate;
+import de.raidcraft.achievements.api.Achievement;
+import de.raidcraft.achievements.api.AchievementHolder;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.action.ActionException;
 import de.raidcraft.api.action.action.ActionFactory;
@@ -26,7 +26,7 @@ import java.util.Collection;
 /**
  * @author Silthus
  */
-public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
+public abstract class YAMLAchievementTemplate<T> extends AbstractAchievementTemplate<T> {
 
     @NonNull
     private final ConfigurationSection config;
@@ -79,9 +79,11 @@ public class YAMLAchievementTemplate extends AbstractAchievementTemplate {
     }
 
     @Override
-    public <T> Achievement<T> createAchievement(AchievementHolder<T> holder) {
+    public Achievement<T> createAchievement(AchievementHolder<T> holder) {
 
-        return RaidCraft.getComponent(AchievementManager.class).getAchievement(holder, this);
+        Achievement<T> achievement = RaidCraft.getComponent(AchievementManager.class).getAchievement(holder, this);
+        holder.addAchievement(achievement);
+        return achievement;
     }
 
     public String getCreator() {

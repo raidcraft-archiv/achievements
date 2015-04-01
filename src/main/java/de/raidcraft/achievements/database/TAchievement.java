@@ -4,7 +4,7 @@ import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.validation.NotNull;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementPlugin;
-import de.raidcraft.api.achievement.Achievement;
+import de.raidcraft.achievements.api.Achievement;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
