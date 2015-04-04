@@ -49,7 +49,7 @@ public class AchievementPlugin extends BasePlugin {
 		ActionAPI.register(this)
 				.trigger(new AchievementTrigger())
                 .requirement("achievement.has", (Player player, ConfigurationSection config) ->
-                        getAchievementManager().getAchievementHolder(player).hasGainedAchievement(getConfig().getString("achievement")));
+                        getAchievementManager().getAchievementHolder(player).hasGainedAchievement(config.getString("achievement")));
     }
 
     @Override
