@@ -1,9 +1,9 @@
 package de.raidcraft.achievements.achievements;
 
-import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.achievements.api.AbstractAchievement;
 import de.raidcraft.achievements.api.AchievementHolder;
 import de.raidcraft.achievements.api.AchievementTemplate;
+import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.requirement.Requirement;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class PlayerAchievement extends AbstractAchievement<Player> {
     @SuppressWarnings("unchecked")
     protected Collection<Action<Player>> getApplicableActions() {
 
-        return getTemplate().getRequirements(Player.class);
+        return getTemplate().getActions(Player.class);
     }
 
     @Override
