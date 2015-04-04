@@ -4,8 +4,8 @@ import de.raidcraft.achievements.commands.BaseCommands;
 import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.achievements.database.TAchievementTemplate;
-import de.raidcraft.achievements.trigger.AchievementTrigger;
 import de.raidcraft.achievements.listener.PlayerListener;
+import de.raidcraft.achievements.trigger.AchievementTrigger;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.action.ActionAPI;
 import lombok.Getter;
@@ -48,9 +48,9 @@ public class AchievementPlugin extends BasePlugin {
 	private void registerActionAPI(){
 		ActionAPI.register(this)
 				.trigger(new AchievementTrigger())
-				.requirement("achievement.has", (Player player, ConfigurationSection config) -> !getConfig().isSet("achievement")
-						|| getAchievementManager().getAchievementHolder(player).hasGainedAchievement(getConfig().getString("achievement")));
-	}
+                .requirement("achievement.has", (Player player, ConfigurationSection config) ->
+                        getAchievementManager().getAchievementHolder(player).hasGainedAchievement(getConfig().getString("achievement")));
+    }
 
     @Override
     public List<Class<?>> getDatabaseClasses() {

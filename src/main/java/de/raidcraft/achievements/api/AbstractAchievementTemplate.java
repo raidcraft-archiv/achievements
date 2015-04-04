@@ -70,7 +70,7 @@ public abstract class AbstractAchievementTemplate<T> implements AchievementTempl
     @SuppressWarnings("unchecked")
     public boolean processTrigger(T entity) {
 
-        if (getRequirements().isEmpty()) {
+        if (getApplicableRequirements().isEmpty()) {
             return createAchievement(entity).unlock();
         }
 
