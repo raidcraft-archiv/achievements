@@ -32,6 +32,14 @@ public interface AchievementHolder<T> {
     public int getTotalPoints();
 
     /**
+     * Gets the current rank of this achievement holder in its category (Type).
+     * The first ranked will be the one with the highest points.
+     *
+     * @return overall rank
+     */
+    public int getRank();
+
+    /**
      * Gets the type of the achievement holder. This can be anything
      * ranging from a player to guilds. The type defines what kind of
      * requirements and triggers the achievement can have.

@@ -1,8 +1,10 @@
 package de.raidcraft.achievements.listener;
 
 import de.raidcraft.achievements.AchievementPlugin;
+import de.raidcraft.achievements.api.Achievement;
+import de.raidcraft.achievements.api.AchievementHolder;
 import de.raidcraft.achievements.api.events.AchievementGainEvent;
-import de.raidcraft.api.language.Translator;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -27,47 +29,83 @@ public class PlayerListener implements Listener {
 	public void onAchievementGain(AchievementGainEvent event) {
 
 		// broadcast if wanted
-		if (event.getAchievement().getTemplate().isBroadcasting()) {
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				if (player.equals(event.getAchievement().getHolder().getType())) {
-					Translator.msg(AchievementPlugin.class, player, "achievement.get",
-                            ChatColor.YELLOW + "Du hast den Erfolg "
-		                            + ChatColor.GREEN + "[%1s] "
-                                    + ChatColor.AQUA + "%2s "
-                                    + ChatColor.YELLOW + "erhalten.",
-							event.getAchievement().getDisplayName(),
-							event.getAchievement().getTemplate().getDescription()
-//							new FancyMessage()
-//									.color(ChatColor.YELLOW).text("Du hast den Erfolg ")
-//									.color(ChatColor.GREEN)
-//									.then("[" + event.getAchievement().getDisplayName() + "]")
-//									.color(ChatColor.DARK_PURPLE)
-//									.tooltip(event.getAchievement().getTemplate().getDescription())
-//									.then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
-					);
-				} else {
-					Translator.msg(AchievementPlugin.class, player, "achievement.broadcast",
-                            ChatColor.AQUA + "%1s "
-                                    + ChatColor.YELLOW + "hat den Erfolg " +
-		                            ChatColor.GREEN + "[%2s] "
-                                    + ChatColor.AQUA + "%3s "
-                                    + ChatColor.YELLOW + "erhalten.",
-							event.getAchievement().getHolder().getDisplayName(),
-							event.getAchievement().getDisplayName(),
-							event.getAchievement().getTemplate().getDescription()
-//							new FancyMessage()
-//									.color(ChatColor.AQUA).text(event.getAchievement().getHolder().getDisplayName())
-//									.color(ChatColor.YELLOW).text(" hat den Erfolg ")
-//									.color(ChatColor.GREEN)
-//									.then("[" + event.getAchievement().getDisplayName() + "]")
-//									.color(ChatColor.DARK_PURPLE)
-//									.tooltip(event.getAchievement().getTemplate().getDescription())
-//									.then().color(ChatColor.YELLOW).text(" erhalten.").toJSONString()
-					);
-				}
-			}
+        Achievement achievement = event.getAchievement();
+        if (achievement.getTemplate().isBroadcasting()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                AchievementHolder holder = achievement.getHolder();
+                if (player.equals(holder.getType())) {
+                    //					Translator.msg(AchievementPlugin.class, player, "achievement.get",
+                    //                            ChatColor.YELLOW + "Du hast den Erfolg "
+                    //		                            + ChatColor.GREEN + "[%1s] "
+                    //                                    + ChatColor.AQUA + "%2s "
+                    //                                    + ChatColor.YELLOW + "erhalten.",
+                    //							event.getAchievement().getDisplayName(),
+                    //							event.getAchievement().getTemplate().getDescription()
+                    getAchievementTooltip(new FancyMessage("Du hast den Erfolg ")
+                            .color(ChatColor.GREEN)
+                            .then(), achievement)
+                            .then().text(" erhalten.").color(ChatColor.GREEN).send(player);
+                } else {
+                    //					Translator.msg(AchievementPlugin.class, player, "achievement.broadcast",
+                    //                            ChatColor.AQUA + "%1s "
+                    //                                    + ChatColor.YELLOW + "hat den Erfolg " +
+                    //		                            ChatColor.GREEN + "[%2s] "
+                    //                                    + ChatColor.AQUA + "%3s "
+                    //                                    + ChatColor.YELLOW + "erhalten.",
+                    //							event.getAchievement().getHolder().getDisplayName(),
+                    //							event.getAchievement().getDisplayName(),
+                    //							event.getAchievement().getTemplate().getDescription()
+                    int rank = holder.getRank();
+                    getAchievementTooltip(new FancyMessage(holder.getDisplayName())
+                            .color(ChatColor.AQUA)
+                            .formattedTooltip(
+                                    new FancyMessage("#" + rank + " ")
+                                            .color(rank < 4 ? (rank < 3 ? (rank < 2 ? ChatColor.GOLD : ChatColor.GRAY) : ChatColor.RED) : ChatColor.AQUA)
+                                            .text(holder.getDisplayName()).color(ChatColor.YELLOW),
+                                    new FancyMessage(holder.getTotalPoints() + "")
+                                            .color(ChatColor.AQUA)
+                                            .text(" Erfolgspunkte").color(ChatColor.YELLOW),
+                                    new FancyMessage(holder.getCompletedAchievements().size() + "")
+                                            .color(ChatColor.DARK_AQUA)
+                                            .text("/").color(ChatColor.YELLOW)
+                                            .text(plugin.getAchievementManager().getAchievements().size() + "").color(ChatColor.AQUA)
+                                            .text(" Erfolge").color(ChatColor.YELLOW)
+                            )
+                            .color(ChatColor.GREEN)
+                            .then(), achievement)
+                            .then().text(" erhalten.").color(ChatColor.GREEN).send(player);
+                }
+            }
 		}
 	}
+
+    private FancyMessage getAchievementTooltip(FancyMessage msg, Achievement achievement) {
+
+        boolean secret = achievement.getTemplate().isSecret();
+        FancyMessage description;
+        if (secret) {
+            description = new FancyMessage("*** ??? *** ??? *** ??? ***")
+                    .color(ChatColor.ITALIC)
+                    .color(ChatColor.GRAY);
+        } else {
+            description = new FancyMessage(achievement.getTemplate().getDescription())
+                    .color(ChatColor.ITALIC)
+                    .color(ChatColor.GREEN);
+        }
+        return msg.text("[").color(ChatColor.DARK_PURPLE)
+                .text(achievement.getDisplayName())
+                .color(ChatColor.GOLD)
+                .text("]").color(ChatColor.DARK_PURPLE)
+                .formattedTooltip(
+                        new FancyMessage(achievement.getDisplayName())
+                                .color(ChatColor.YELLOW)
+                                .text(" (+").color(ChatColor.GREEN)
+                                .text(achievement.getTemplate().getPoints() + "")
+                                .color(ChatColor.AQUA)
+                                .text(")").color(ChatColor.GREEN),
+                        description
+                );
+    }
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {

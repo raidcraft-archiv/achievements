@@ -1,18 +1,19 @@
 package de.raidcraft.achievements;
 
+import com.avaje.ebean.OrderBy;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.achievements.PlayerAchievement;
+import de.raidcraft.achievements.api.Achievement;
+import de.raidcraft.achievements.api.AchievementException;
+import de.raidcraft.achievements.api.AchievementHolder;
+import de.raidcraft.achievements.api.AchievementTemplate;
+import de.raidcraft.achievements.api.DuplicateAchievementException;
 import de.raidcraft.achievements.config.PlayerAchievementTemplate;
 import de.raidcraft.achievements.config.YAMLAchievementTemplate;
 import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.achievements.database.TAchievementTemplate;
 import de.raidcraft.achievements.holder.AchievementPlayer;
 import de.raidcraft.api.Component;
-import de.raidcraft.achievements.api.Achievement;
-import de.raidcraft.achievements.api.AchievementException;
-import de.raidcraft.achievements.api.AchievementHolder;
-import de.raidcraft.achievements.api.AchievementTemplate;
-import de.raidcraft.achievements.api.DuplicateAchievementException;
 import de.raidcraft.api.config.SimpleConfiguration;
 import de.raidcraft.util.CaseInsensitiveMap;
 import de.raidcraft.util.UUIDUtil;
@@ -101,6 +102,20 @@ public final class AchievementManager implements Component {
 
         unload();
         load();
+    }
+
+    public int getRank(AchievementHolder holder) {
+
+        List<TAchievementHolder> holders = plugin.getDatabase().find(TAchievementHolder.class).where()
+                .ge("points", holder.getTotalPoints())
+                .orderBy("points")
+                .setOrder(new OrderBy<>("DESC")).findList();
+        for (int i = 0; i < holders.size(); i++) {
+            if (holders.get(i).getUuid().equals(holder.getUniqueIdentifier())) {
+                return i + 1;
+            }
+        }
+        return 0;
     }
 
     public Collection<AchievementTemplate> getAchievements() {

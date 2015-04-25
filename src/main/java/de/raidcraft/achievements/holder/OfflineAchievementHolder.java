@@ -3,12 +3,12 @@ package de.raidcraft.achievements.holder;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementManager;
 import de.raidcraft.achievements.AchievementPlugin;
-import de.raidcraft.achievements.database.TAchievement;
-import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.achievements.api.AbstractAchievementHolder;
 import de.raidcraft.achievements.api.Achievement;
 import de.raidcraft.achievements.api.AchievementException;
 import de.raidcraft.achievements.api.AchievementTemplate;
+import de.raidcraft.achievements.database.TAchievement;
+import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.util.CaseInsensitiveMap;
 
 import java.util.UUID;
@@ -21,6 +21,12 @@ public class OfflineAchievementHolder extends AbstractAchievementHolder<TAchieve
     public OfflineAchievementHolder(TAchievementHolder type) {
 
         super(type);
+    }
+
+    @Override
+    public int getRank() {
+
+        return RaidCraft.getComponent(AchievementManager.class).getRank(this);
     }
 
     @Override
