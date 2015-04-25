@@ -5,10 +5,10 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import de.raidcraft.achievements.AchievementPlugin;
-import de.raidcraft.achievements.config.YAMLAchievementTemplate;
 import de.raidcraft.achievements.api.Achievement;
 import de.raidcraft.achievements.api.AchievementHolder;
 import de.raidcraft.achievements.api.AchievementTemplate;
+import de.raidcraft.achievements.config.YAMLAchievementTemplate;
 import de.raidcraft.api.config.SimpleConfiguration;
 import de.raidcraft.util.CommandUtil;
 import de.raidcraft.util.PaginatedResult;
@@ -49,7 +49,7 @@ public class AdminCommands {
             aliases = {"create"},
             desc = "Creates an achievement at the given location.",
             min = 2,
-            flags = "m:r:p:sbe"
+            flags = "m:r:p:sbed:"
     )
     @CommandPermissions("rcachievements.achievement.create")
     public void create(CommandContext args, CommandSender sender) throws CommandException {
@@ -68,7 +68,7 @@ public class AdminCommands {
         SimpleConfiguration<AchievementPlugin> config = new SimpleConfiguration<>(plugin, file);
         config.set("name", args.getJoinedStrings(1));
         config.set("points", args.getFlagInteger('p', 10));
-
+        config.set("description", args.getFlag('d', args.getJoinedStrings(1)));
         config.set("enabled", args.hasFlag('e'));
         config.set("broadcasting", !args.hasFlag('b'));
         config.set("secret", args.hasFlag('s'));
