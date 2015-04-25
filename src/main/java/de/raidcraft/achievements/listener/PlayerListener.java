@@ -55,8 +55,9 @@ public class PlayerListener implements Listener {
                     //							event.getAchievement().getDisplayName(),
                     //							event.getAchievement().getTemplate().getDescription()
                     int rank = holder.getRank();
-                    getAchievementTooltip(new FancyMessage(holder.getDisplayName())
+                    FancyMessage msg = new FancyMessage(holder.getDisplayName())
                             .color(ChatColor.AQUA)
+                            .style(ChatColor.UNDERLINE)
                             .formattedTooltip(
                                     new FancyMessage("#" + rank + " ")
                                             .color(rank < 4 ? (rank < 3 ? (rank < 2 ? ChatColor.GOLD : ChatColor.GRAY) : ChatColor.RED) : ChatColor.AQUA)
@@ -69,9 +70,9 @@ public class PlayerListener implements Listener {
                                             .then("/").color(ChatColor.YELLOW)
                                             .then(plugin.getAchievementManager().getAchievements().size() + "").color(ChatColor.AQUA)
                                             .then(" Erfolge").color(ChatColor.YELLOW)
-                            )
-                            .color(ChatColor.GREEN), achievement)
-                            .then(" erhalten.").color(ChatColor.GREEN).send(player);
+                            ).then(" hat den Erfolg ").color(ChatColor.GREEN);
+                    msg = getAchievementTooltip(msg, achievement);
+                    msg.then(" erhalten.").color(ChatColor.GREEN).send(player);
                 }
             }
 		}

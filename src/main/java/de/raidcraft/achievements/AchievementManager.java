@@ -1,6 +1,5 @@
 package de.raidcraft.achievements;
 
-import com.avaje.ebean.OrderBy;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.achievements.PlayerAchievement;
 import de.raidcraft.achievements.api.Achievement;
@@ -27,6 +26,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,12 +106,10 @@ public final class AchievementManager implements Component {
 
     public int getRank(AchievementHolder holder) {
 
-        List<TAchievementHolder> holders = plugin.getDatabase().find(TAchievementHolder.class).where()
-                .ge("points", holder.getTotalPoints())
-                .orderBy("points")
-                .setOrder(new OrderBy<>("points DESC")).findList();
-        for (int i = 0; i < holders.size(); i++) {
-            if (holders.get(i).getUuid().equals(holder.getUniqueIdentifier())) {
+        List<TAchievementHolder> list = plugin.getDatabase().find(TAchievementHolder.class).orderBy("points").findList();
+        Collections.reverse(list);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUuid().equals(holder.getUniqueIdentifier())) {
                 return i + 1;
             }
         }
