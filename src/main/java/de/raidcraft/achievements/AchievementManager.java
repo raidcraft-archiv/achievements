@@ -109,7 +109,7 @@ public final class AchievementManager implements Component {
         List<TAchievementHolder> holders = plugin.getDatabase().find(TAchievementHolder.class).where()
                 .ge("points", holder.getTotalPoints())
                 .orderBy("points")
-                .setOrder(new OrderBy<>("DESC")).findList();
+                .setOrder(new OrderBy<>("points DESC")).findList();
         for (int i = 0; i < holders.size(); i++) {
             if (holders.get(i).getUuid().equals(holder.getUniqueIdentifier())) {
                 return i + 1;
