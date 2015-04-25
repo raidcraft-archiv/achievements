@@ -85,11 +85,11 @@ public class PlayerListener implements Listener {
         FancyMessage description;
         if (secret) {
             description = new FancyMessage("*** ??? *** ??? *** ??? ***")
-                    .color(ChatColor.ITALIC)
+                    .style(ChatColor.ITALIC)
                     .color(ChatColor.GRAY);
         } else {
             description = new FancyMessage(achievement.getTemplate().getDescription())
-                    .color(ChatColor.ITALIC)
+                    .style(ChatColor.ITALIC)
                     .color(ChatColor.GREEN);
         }
         return msg.text("[").color(ChatColor.DARK_PURPLE)
