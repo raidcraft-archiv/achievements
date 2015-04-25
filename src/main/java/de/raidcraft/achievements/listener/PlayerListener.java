@@ -33,6 +33,26 @@ public class PlayerListener implements Listener {
         if (achievement.getTemplate().isBroadcasting()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 AchievementHolder holder = achievement.getHolder();
+                int rank = holder.getRank();
+                FancyMessage msg = new FancyMessage(holder.getDisplayName())
+                        .color(ChatColor.AQUA)
+                        .style(ChatColor.UNDERLINE)
+                        .formattedTooltip(
+                                new FancyMessage("#" + rank + " ")
+                                        .color(rank < 4 ? (rank < 3 ? (rank < 2 ? ChatColor.GOLD : ChatColor.GRAY) : ChatColor.RED) : ChatColor.AQUA)
+                                        .then(holder.getDisplayName()).color(ChatColor.YELLOW),
+                                new FancyMessage(holder.getTotalPoints() + "")
+                                        .color(ChatColor.AQUA)
+                                        .then(" Erfolgspunkte").color(ChatColor.YELLOW),
+                                new FancyMessage(holder.getCompletedAchievements().size() + "")
+                                        .color(ChatColor.DARK_AQUA)
+                                        .then("/").color(ChatColor.YELLOW)
+                                        .then(plugin.getAchievementManager().getAchievements().size() + "").color(ChatColor.AQUA)
+                                        .then(" Erfolge").color(ChatColor.YELLOW)
+                        ).then(" hat den Erfolg ").color(ChatColor.GREEN);
+                msg = getAchievementTooltip(msg, achievement);
+                msg.then(" erhalten.").color(ChatColor.GREEN).send(player);
+                /*
                 if (player.equals(holder.getType())) {
                     //					Translator.msg(AchievementPlugin.class, player, "achievement.get",
                     //                            ChatColor.YELLOW + "Du hast den Erfolg "
@@ -54,26 +74,8 @@ public class PlayerListener implements Listener {
                     //							event.getAchievement().getHolder().getDisplayName(),
                     //							event.getAchievement().getDisplayName(),
                     //							event.getAchievement().getTemplate().getDescription()
-                    int rank = holder.getRank();
-                    FancyMessage msg = new FancyMessage(holder.getDisplayName())
-                            .color(ChatColor.AQUA)
-                            .style(ChatColor.UNDERLINE)
-                            .formattedTooltip(
-                                    new FancyMessage("#" + rank + " ")
-                                            .color(rank < 4 ? (rank < 3 ? (rank < 2 ? ChatColor.GOLD : ChatColor.GRAY) : ChatColor.RED) : ChatColor.AQUA)
-                                            .then(holder.getDisplayName()).color(ChatColor.YELLOW),
-                                    new FancyMessage(holder.getTotalPoints() + "")
-                                            .color(ChatColor.AQUA)
-                                            .then(" Erfolgspunkte").color(ChatColor.YELLOW),
-                                    new FancyMessage(holder.getCompletedAchievements().size() + "")
-                                            .color(ChatColor.DARK_AQUA)
-                                            .then("/").color(ChatColor.YELLOW)
-                                            .then(plugin.getAchievementManager().getAchievements().size() + "").color(ChatColor.AQUA)
-                                            .then(" Erfolge").color(ChatColor.YELLOW)
-                            ).then(" hat den Erfolg ").color(ChatColor.GREEN);
-                    msg = getAchievementTooltip(msg, achievement);
-                    msg.then(" erhalten.").color(ChatColor.GREEN).send(player);
-                }
+
+                }*/
             }
 		}
 	}
