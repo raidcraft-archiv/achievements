@@ -42,9 +42,8 @@ public class PlayerListener implements Listener {
                     //							event.getAchievement().getDisplayName(),
                     //							event.getAchievement().getTemplate().getDescription()
                     getAchievementTooltip(new FancyMessage("Du hast den Erfolg ")
-                            .color(ChatColor.GREEN)
-                            .then(), achievement)
-                            .then().text(" erhalten.").color(ChatColor.GREEN).send(player);
+                            .color(ChatColor.GREEN), achievement)
+                            .then(" erhalten.").color(ChatColor.GREEN).send(player);
                 } else {
                     //					Translator.msg(AchievementPlugin.class, player, "achievement.broadcast",
                     //                            ChatColor.AQUA + "%1s "
@@ -61,19 +60,18 @@ public class PlayerListener implements Listener {
                             .formattedTooltip(
                                     new FancyMessage("#" + rank + " ")
                                             .color(rank < 4 ? (rank < 3 ? (rank < 2 ? ChatColor.GOLD : ChatColor.GRAY) : ChatColor.RED) : ChatColor.AQUA)
-                                            .text(holder.getDisplayName()).color(ChatColor.YELLOW),
+                                            .then(holder.getDisplayName()).color(ChatColor.YELLOW),
                                     new FancyMessage(holder.getTotalPoints() + "")
                                             .color(ChatColor.AQUA)
-                                            .text(" Erfolgspunkte").color(ChatColor.YELLOW),
+                                            .then(" Erfolgspunkte").color(ChatColor.YELLOW),
                                     new FancyMessage(holder.getCompletedAchievements().size() + "")
                                             .color(ChatColor.DARK_AQUA)
-                                            .text("/").color(ChatColor.YELLOW)
-                                            .text(plugin.getAchievementManager().getAchievements().size() + "").color(ChatColor.AQUA)
-                                            .text(" Erfolge").color(ChatColor.YELLOW)
+                                            .then("/").color(ChatColor.YELLOW)
+                                            .then(plugin.getAchievementManager().getAchievements().size() + "").color(ChatColor.AQUA)
+                                            .then(" Erfolge").color(ChatColor.YELLOW)
                             )
-                            .color(ChatColor.GREEN)
-                            .then(), achievement)
-                            .then().text(" erhalten.").color(ChatColor.GREEN).send(player);
+                            .color(ChatColor.GREEN), achievement)
+                            .then(" erhalten.").color(ChatColor.GREEN).send(player);
                 }
             }
 		}
@@ -92,19 +90,18 @@ public class PlayerListener implements Listener {
                     .style(ChatColor.ITALIC)
                     .color(ChatColor.GREEN);
         }
-        return msg.text("[").color(ChatColor.DARK_PURPLE)
-                .text(achievement.getDisplayName())
+        return msg.then("[").color(ChatColor.DARK_PURPLE)
+                .then(achievement.getDisplayName())
                 .color(ChatColor.GOLD)
-                .text("]").color(ChatColor.DARK_PURPLE)
                 .formattedTooltip(
                         new FancyMessage(achievement.getDisplayName())
                                 .color(ChatColor.YELLOW)
-                                .text(" (+").color(ChatColor.GREEN)
-                                .text(achievement.getTemplate().getPoints() + "")
+                                .then(" (+").color(ChatColor.GREEN)
+                                .then(achievement.getTemplate().getPoints() + "")
                                 .color(ChatColor.AQUA)
-                                .text(")").color(ChatColor.GREEN),
+                                .then(")").color(ChatColor.GREEN),
                         description
-                );
+                ).then("]").color(ChatColor.DARK_PURPLE);
     }
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
