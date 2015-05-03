@@ -4,6 +4,7 @@ import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.achievements.api.Achievement;
 import de.raidcraft.achievements.api.AchievementHolder;
 import de.raidcraft.achievements.api.events.AchievementGainEvent;
+import de.raidcraft.achievements.util.AchievementUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,7 +51,7 @@ public class PlayerListener implements Listener {
                                         .then(plugin.getAchievementManager().getAchievements().size() + "").color(ChatColor.AQUA)
                                         .then(" Erfolge").color(ChatColor.YELLOW)
                         ).then(" hat den Erfolg ").color(ChatColor.GREEN);
-                msg = getAchievementTooltip(msg, achievement);
+                msg = AchievementUtil.getAchievementTooltip(msg, achievement);
                 msg.then(" erhalten.").color(ChatColor.GREEN).send(player);
                 /*
                 if (player.equals(holder.getType())) {
@@ -80,35 +81,8 @@ public class PlayerListener implements Listener {
 		}
 	}
 
-    private FancyMessage getAchievementTooltip(FancyMessage msg, Achievement achievement) {
-
-        boolean secret = achievement.getTemplate().isSecret();
-        FancyMessage description;
-        if (secret) {
-            description = new FancyMessage("*** ??? *** ??? *** ??? ***")
-                    .style(ChatColor.ITALIC)
-                    .color(ChatColor.GRAY);
-        } else {
-            description = new FancyMessage(achievement.getTemplate().getDescription())
-                    .style(ChatColor.ITALIC)
-                    .color(ChatColor.GREEN);
-        }
-        return msg.then("[").color(ChatColor.DARK_PURPLE)
-                .then(achievement.getDisplayName())
-                .color(ChatColor.GOLD)
-                .formattedTooltip(
-                        new FancyMessage(achievement.getDisplayName())
-                                .color(ChatColor.YELLOW)
-                                .then(" (+").color(ChatColor.GREEN)
-                                .then(achievement.getTemplate().getPoints() + "")
-                                .color(ChatColor.AQUA)
-                                .then(")").color(ChatColor.GREEN),
-                        description
-                ).then("]").color(ChatColor.DARK_PURPLE);
-    }
-
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-	public void onPlayerQuit(PlayerQuitEvent event) {
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onPlayerQuit(PlayerQuitEvent event) {
 
         plugin.getAchievementManager().clearPlayerCache(event.getPlayer());
     }

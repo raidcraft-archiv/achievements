@@ -8,6 +8,7 @@ import de.raidcraft.achievements.listener.PlayerListener;
 import de.raidcraft.achievements.trigger.AchievementTrigger;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.action.ActionAPI;
+import de.raidcraft.api.chat.Chat;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -26,6 +27,7 @@ public class AchievementPlugin extends BasePlugin {
     @Override
     public void enable() {
 
+        Chat.registerAutoCompletionProvider(this, new AchievementAutoCompletionProvider());
         registerActionAPI();
 
         achievementManager = new AchievementManager(this);
