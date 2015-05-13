@@ -21,13 +21,6 @@ public class PlayerAchievementTemplate extends YAMLAchievementTemplate<Player> {
     }
 
     @Override
-    public Class<Player> getTriggerEntityType() {
-
-        return Player.class;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
     protected Collection<Requirement<Player>> getApplicableRequirements() {
 
         return getRequirements(Player.class);
