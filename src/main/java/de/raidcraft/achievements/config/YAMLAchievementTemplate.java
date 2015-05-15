@@ -5,14 +5,8 @@ import de.raidcraft.achievements.AchievementManager;
 import de.raidcraft.achievements.api.AbstractAchievementTemplate;
 import de.raidcraft.achievements.api.Achievement;
 import de.raidcraft.achievements.api.AchievementHolder;
-import de.raidcraft.api.action.action.Action;
-import de.raidcraft.api.action.action.ActionException;
-import de.raidcraft.api.action.ActionFactory;
-import de.raidcraft.api.action.requirement.Requirement;
-import de.raidcraft.api.action.requirement.RequirementException;
-import de.raidcraft.api.action.RequirementFactory;
+import de.raidcraft.api.action.ActionAPI;
 import de.raidcraft.api.action.TriggerFactory;
-import de.raidcraft.api.action.TriggerManager;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,7 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -29,7 +22,7 @@ import java.util.Collection;
 public abstract class YAMLAchievementTemplate<T> extends AbstractAchievementTemplate<T> {
 
     @NonNull
-    private final ConfigurationSection config;
+    protected final ConfigurationSection config;
 
     public YAMLAchievementTemplate(@NonNull String name, ConfigurationSection config) {
 
@@ -47,31 +40,9 @@ public abstract class YAMLAchievementTemplate<T> extends AbstractAchievementTemp
     }
 
     @Override
-    protected Collection<Requirement<?>> loadRequirements() {
-
-        try {
-            return RaidCraft.getComponent(RequirementFactory.class).createRequirements(getIdentifier(), config.getConfigurationSection("requirements"));
-        } catch (RequirementException e) {
-            RaidCraft.LOGGER.warning(e.getMessage() + " in " + getIdentifier());
-        }
-        return new ArrayList<>();
-    }
-
-    @Override
-    protected Collection<Action<?>> loadActions() {
-
-        try {
-            return RaidCraft.getComponent(ActionFactory.class).createActions(config.getConfigurationSection("actions"));
-        } catch (ActionException e) {
-            RaidCraft.LOGGER.warning(e.getMessage() + " in " + getIdentifier());
-        }
-        return new ArrayList<>();
-    }
-
-    @Override
     protected Collection<TriggerFactory> loadTrigger() {
 
-        Collection<TriggerFactory> trigger = TriggerManager.getInstance().createTriggerFactories(config.getConfigurationSection("trigger"));
+        Collection<TriggerFactory> trigger = ActionAPI.createTrigger(config.getConfigurationSection("trigger"));
         if (trigger.isEmpty()) {
             RaidCraft.LOGGER.warning("The achievement " + getIdentifier() + " has no trigger defined!");
         }

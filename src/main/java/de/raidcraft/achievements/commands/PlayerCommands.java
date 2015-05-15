@@ -100,7 +100,6 @@ public class PlayerCommands {
         if (!(sender instanceof Player)) {
             throw new CommandException("Only players can execute this command.");
         }
-        Player player = (Player) sender;
         try {
             String name = args.getJoinedStrings(0);
             AchievementTemplate template = plugin.getAchievementManager().getAchievementTemplateByName(name);
@@ -110,8 +109,6 @@ public class PlayerCommands {
             sender.sendMessage(template.getDescription());
         } catch (AchievementException e) {
             sender.sendMessage("Kein gültiger Erfolg");
-            return;
         }
-
     }
 }

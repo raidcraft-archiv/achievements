@@ -67,7 +67,6 @@ public abstract class AbstractAchievementTemplate<T> implements AchievementTempl
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public boolean processTrigger(T entity) {
 
         if (getApplicableRequirements().isEmpty()) {
@@ -106,9 +105,9 @@ public abstract class AbstractAchievementTemplate<T> implements AchievementTempl
         return allUnorderedMatch && createAchievement(entity).unlock();
     }
 
-    protected abstract Collection<Requirement<?>> loadRequirements();
+    protected abstract Collection<Requirement<T>> loadRequirements();
 
-    protected abstract Collection<Action<?>> loadActions();
+    protected abstract Collection<Action<T>> loadActions();
 
     protected abstract Collection<TriggerFactory> loadTrigger();
 }
