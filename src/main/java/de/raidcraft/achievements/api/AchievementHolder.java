@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  */
 public interface AchievementHolder<T> {
 
-    public UUID getUniqueIdentifier();
+    UUID getUniqueIdentifier();
 
     /**
      * Gets the friendly display name of the holder as it is displayed
@@ -21,7 +21,7 @@ public interface AchievementHolder<T> {
      *
      * @return friendly display name
      */
-    public String getDisplayName();
+    String getDisplayName();
 
     /**
      * Gets the total amount of achievement points for this holder.
@@ -29,7 +29,7 @@ public interface AchievementHolder<T> {
      *
      * @return sum of achievement points for completed achievements
      */
-    public int getTotalPoints();
+    int getTotalPoints();
 
     /**
      * Gets the current rank of this achievement holder in its category (Type).
@@ -37,7 +37,7 @@ public interface AchievementHolder<T> {
      *
      * @return overall rank
      */
-    public int getRank();
+    int getRank();
 
     /**
      * Gets the type of the achievement holder. This can be anything
@@ -46,7 +46,7 @@ public interface AchievementHolder<T> {
      *
      * @return holder type
      */
-    public T getType();
+    T getType();
 
     /**
      * Checks if the holder has the given permission.
@@ -55,7 +55,7 @@ public interface AchievementHolder<T> {
      *
      * @return true if holder has the permission
      */
-    public boolean hasPermission(String permission);
+    boolean hasPermission(String permission);
 
     /**
      * Checks if the holder has an achievement with the given identifier.
@@ -65,7 +65,7 @@ public interface AchievementHolder<T> {
      *
      * @return true if achievement exists for the holder
      */
-    public default boolean hasAchievement(@NonNull String identifier) {
+    default boolean hasAchievement(@NonNull String identifier) {
 
         return getAchievements().parallelStream().anyMatch(
                 achievement -> achievement.getIdentifier().equals(identifier)
@@ -80,14 +80,14 @@ public interface AchievementHolder<T> {
      *
      * @return true if holder has achievement
      */
-    public default boolean hasAchievement(@NonNull AchievementTemplate template) {
+    default boolean hasAchievement(@NonNull AchievementTemplate template) {
 
         return getAchievements().parallelStream().anyMatch(
                 achievement -> achievement.getTemplate().equals(template)
         );
     }
 
-    public default boolean hasGainedAchievement(@NonNull String identifier) {
+    default boolean hasGainedAchievement(@NonNull String identifier) {
 
         return getCompletedAchievements().parallelStream()
                 .filter(achievement -> achievement.getIdentifier().equals(identifier.toLowerCase()))
@@ -101,7 +101,7 @@ public interface AchievementHolder<T> {
      *
      * @return true if {@link #getCompletedAchievements()} contains template
      */
-    public default boolean hasGainedAchievement(@NonNull AchievementTemplate template) {
+    default boolean hasGainedAchievement(@NonNull AchievementTemplate template) {
 
         return getCompletedAchievements().parallelStream()
                 .filter(achievement -> achievement.getTemplate().equals(template))
@@ -116,7 +116,7 @@ public interface AchievementHolder<T> {
      *
      * @return true if {@link #getActiveAchievements()} contains template
      */
-    public default boolean hasActiveAchievement(@NonNull AchievementTemplate template) {
+    default boolean hasActiveAchievement(@NonNull AchievementTemplate template) {
 
         return getActiveAchievements().parallelStream().anyMatch(
                 achievement -> achievement.getTemplate().equals(template)
@@ -130,7 +130,7 @@ public interface AchievementHolder<T> {
      *
      * @return list of active achievements
      */
-    public default Collection<Achievement<T>> getActiveAchievements() {
+    default Collection<Achievement<T>> getActiveAchievements() {
 
         return getAchievements().parallelStream()
                 .filter(Achievement::isActive)
@@ -144,7 +144,7 @@ public interface AchievementHolder<T> {
      *
      * @return list of gained achievements
      */
-    public default Collection<Achievement<T>> getCompletedAchievements() {
+    default Collection<Achievement<T>> getCompletedAchievements() {
 
         return getAchievements().parallelStream()
                 .filter(Achievement::isCompleted)
@@ -157,7 +157,7 @@ public interface AchievementHolder<T> {
      *
      * @return list of all gained and active achievements
      */
-    public Collection<Achievement<T>> getAchievements();
+    Collection<Achievement<T>> getAchievements();
 
     /**
      * Gets the given achievement based on the unique identifier string.
@@ -167,7 +167,7 @@ public interface AchievementHolder<T> {
      *
      * @return null if no achievement is found
      */
-    public default Achievement<T> getAchievement(@NonNull String identifier) {
+    default Achievement<T> getAchievement(@NonNull String identifier) {
 
         return getAchievements().stream()
                 .filter(achievement -> achievement.getTemplate().getIdentifier().equals(identifier.toLowerCase()))
@@ -182,7 +182,7 @@ public interface AchievementHolder<T> {
      *
      * @return null if no achievement is found
      */
-    public default Achievement<T> getAchievement(@NonNull AchievementTemplate template) {
+    default Achievement<T> getAchievement(@NonNull AchievementTemplate template) {
 
         return getAchievements().stream()
                 .filter(achievement -> achievement.getTemplate().equals(template))
@@ -197,7 +197,7 @@ public interface AchievementHolder<T> {
      *
      * @param template to add as achievement
      */
-    public Achievement<T> addAchievement(@NonNull AchievementTemplate template);
+    Achievement<T> addAchievement(@NonNull AchievementTemplate template);
 
     /**
      * Adds the already created achievement to the holder. This will check what state the
@@ -205,7 +205,7 @@ public interface AchievementHolder<T> {
      *
      * @param achievement to add
      */
-    public Achievement<T> addAchievement(@NonNull Achievement<T> achievement);
+    Achievement<T> addAchievement(@NonNull Achievement<T> achievement);
 
     /**
      * Removes the given achievement from the holder marking it as inactive.
@@ -216,7 +216,7 @@ public interface AchievementHolder<T> {
      *
      * @return null if achievement did not exists
      */
-    public Achievement<T> removeAchievement(@NonNull AchievementTemplate template);
+    Achievement<T> removeAchievement(@NonNull AchievementTemplate template);
 
     /**
      * Removes the given achievement from the holder.
@@ -227,7 +227,7 @@ public interface AchievementHolder<T> {
      *
      * @see #removeAchievement(AchievementTemplate)
      */
-    public default Achievement<T> removeAchievement(@NonNull Achievement<T> achievement) {
+    default Achievement<T> removeAchievement(@NonNull Achievement<T> achievement) {
 
         return removeAchievement(achievement.getTemplate());
     }
@@ -235,15 +235,15 @@ public interface AchievementHolder<T> {
     /**
      * Loads all gained achievements from the used storage.
      */
-    public void load();
+    void load();
 
     /**
      * Saves the achievement holder by the underlying serialization method.
      */
-    public void save();
+    void save();
 
     /**
      * Deletes the saved achievement holder with the underlying serialization method.
      */
-    public void delete();
+    void delete();
 }

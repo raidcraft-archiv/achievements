@@ -20,7 +20,7 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
      *
      * @return unique name of the achievement
      */
-    public String getIdentifier();
+    String getIdentifier();
 
     /**
      * Gets the friendly display name of the achievement as it is displayed
@@ -28,7 +28,7 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
      *
      * @return friendly display name
      */
-    public String getDisplayName();
+    String getDisplayName();
 
     /**
      * Gets the description of the achievement. The description may contain
@@ -36,7 +36,7 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
      *
      * @return achievement description
      */
-    public String getDescription();
+    String getDescription();
 
     /**
      * Gets the amount of points the achievement is worth. This has no effect
@@ -44,7 +44,7 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
      *
      * @return achievement points
      */
-    public int getPoints();
+    int getPoints();
 
     /**
      * Sets the achievement as enabled allowing it to be gained by players.
@@ -52,7 +52,7 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
      *
      * @param enabled false to lock achievement
      */
-    public void setEnabled(boolean enabled);
+    void setEnabled(boolean enabled);
 
     /**
      * Checks if the achievement is enabled and can be gained by players.
@@ -62,7 +62,7 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
      *
      * @return true if enabled. default is false
      */
-    public boolean isEnabled();
+    boolean isEnabled();
 
     /**
      * Sets the achievement as secret achievements. Secret achievements dont display their
@@ -70,14 +70,14 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
      *
      * @param secret true will hide the name and description in the overview
      */
-    public void setSecret(boolean secret);
+    void setSecret(boolean secret);
 
     /**
      * Checks if the name and description of the achievement are hidden in the overview.
      *
      * @return true if achievement is secret. default is false
      */
-    public boolean isSecret();
+    boolean isSecret();
 
     /**
      * Sets the achievement to broadcast to all players when someone gains the achievement.
@@ -85,14 +85,14 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
      *
      * @param broadcasting false disables broadcasting of the achievement
      */
-    public void setBroadcasting(boolean broadcasting);
+    void setBroadcasting(boolean broadcasting);
 
     /**
      * Checks if the achievement is broadcasting to all players when someone gains it.
      *
      * @return true if broadcasting is enabled. default is true
      */
-    public boolean isBroadcasting();
+    boolean isBroadcasting();
 
     /**
      * Creates a valid achievement from this template and the given holder.
@@ -101,17 +101,17 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
      *
      * @return active achievement
      */
-    public Achievement<T> createAchievement(AchievementHolder<T> holder);
+    Achievement<T> createAchievement(AchievementHolder<T> holder);
 
-    public Achievement<T> createAchievement(T entity);
+    Achievement<T> createAchievement(T entity);
 
     /**
      * Registers all trigger listeners of this achievement.
      */
-    public void registerListeners();
+    void registerListeners();
 
     /**
      * Unregisters all trigger listeners associated with this achievement.
      */
-    public void unregisterListeners();
+    void unregisterListeners();
 }

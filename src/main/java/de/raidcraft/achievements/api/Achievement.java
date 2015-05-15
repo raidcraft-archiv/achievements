@@ -14,7 +14,7 @@ public interface Achievement<T> {
     /**
      * @see AchievementTemplate#getIdentifier()
      */
-    public default String getIdentifier() {
+    default String getIdentifier() {
 
         return getTemplate().getIdentifier();
     }
@@ -22,7 +22,7 @@ public interface Achievement<T> {
     /**
      * @see AchievementTemplate#getDisplayName()
      */
-    public default String getDisplayName() {
+    default String getDisplayName() {
 
         return getTemplate().getDisplayName();
     }
@@ -34,7 +34,7 @@ public interface Achievement<T> {
      *
      * @see AchievementHolder
      */
-    public AchievementHolder<T> getHolder();
+    AchievementHolder<T> getHolder();
 
     /**
      * Gets the template of the achievement. The template holds all the information
@@ -44,7 +44,7 @@ public interface Achievement<T> {
      *
      * @see AchievementTemplate
      */
-    public AchievementTemplate getTemplate();
+    AchievementTemplate getTemplate();
 
     /**
      * Checks if the achievement is active and needs to be checked for requirements
@@ -52,7 +52,7 @@ public interface Achievement<T> {
      *
      * @return list of active achievements
      */
-    public default boolean isActive() {
+    default boolean isActive() {
 
         return getCompletionDate() == null;
     }
@@ -62,12 +62,12 @@ public interface Achievement<T> {
      *
      * @return true if achievement was completed
      */
-    public default boolean isCompleted() {
+    default boolean isCompleted() {
 
         return getCompletionDate() != null;
     }
 
-    public void setCompletionDate(Timestamp timestamp);
+    void setCompletionDate(Timestamp timestamp);
 
     /**
      * Gets the time the achievement was gained. Can be null if the achievement
@@ -75,13 +75,13 @@ public interface Achievement<T> {
      *
      * @return completion time of the achievement. can be null if not completed
      */
-    public Timestamp getCompletionDate();
+    Timestamp getCompletionDate();
 
-    public boolean unlock();
+    boolean unlock();
 
-    public void remove();
+    void remove();
 
-    public void save();
+    void save();
 
-    public void delete();
+    void delete();
 }

@@ -2,7 +2,7 @@ package de.raidcraft.achievements.api;
 
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.requirement.Requirement;
-import de.raidcraft.api.action.trigger.TriggerFactory;
+import de.raidcraft.api.action.TriggerFactory;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
