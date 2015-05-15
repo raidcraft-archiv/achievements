@@ -28,9 +28,9 @@ public abstract class AbstractAchievementTemplate<T> implements AchievementTempl
     @NonNull
     private final String displayName;
     @NonNull
-    private Collection<Requirement<?>> requirements = new ArrayList<>();
+    private Collection<Requirement<T>> requirements = new ArrayList<>();
     @NonNull
-    private Collection<Action<?>> actions = new ArrayList<>();
+    private Collection<Action<T>> actions = new ArrayList<>();
     @NonNull
     private Collection<TriggerFactory> trigger = new ArrayList<>();
     @Setter(AccessLevel.PROTECTED)
@@ -49,6 +49,16 @@ public abstract class AbstractAchievementTemplate<T> implements AchievementTempl
 
         this.identifier = identifier;
         this.displayName = displayName;
+    }
+
+    public Collection<Action<?>> getActions() {
+
+        return new ArrayList<>(actions);
+    }
+
+    public Collection<Requirement<?>> getRequirements() {
+
+        return new ArrayList<>(requirements);
     }
 
     protected abstract Collection<Requirement<T>> getApplicableRequirements();
