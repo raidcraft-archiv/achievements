@@ -2,7 +2,9 @@ package de.raidcraft.achievements.config;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementManager;
+import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.achievements.api.Achievement;
+import de.raidcraft.achievements.api.AchievementHolder;
 import de.raidcraft.api.action.ActionAPI;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.requirement.Requirement;
@@ -20,6 +22,13 @@ public class PlayerAchievementTemplate extends YAMLAchievementTemplate<Player> {
     public PlayerAchievementTemplate(@NonNull String name, ConfigurationSection config) {
 
         super(name, config);
+    }
+
+    @Override
+    public boolean processTrigger(Player entity) {
+
+        AchievementHolder<Player> holder = RaidCraft.getComponent(AchievementPlugin.class).getAchievementManager().getAchievementHolder(entity);
+        return !holder.hasGainedAchievement(this) && super.processTrigger(entity);
     }
 
     @Override
