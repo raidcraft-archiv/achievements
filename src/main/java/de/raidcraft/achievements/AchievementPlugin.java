@@ -1,5 +1,6 @@
 package de.raidcraft.achievements;
 
+import de.raidcraft.achievements.actions.ResetAchievementRequirementsActions;
 import de.raidcraft.achievements.commands.BaseCommands;
 import de.raidcraft.achievements.database.TAchievement;
 import de.raidcraft.achievements.database.TAchievementHolder;
@@ -49,6 +50,7 @@ public class AchievementPlugin extends BasePlugin {
 
 	private void registerActionAPI(){
 		ActionAPI.register(this)
+                .action(new ResetAchievementRequirementsActions())
 				.trigger(new AchievementTrigger())
                 .requirement("achievement.has", (Player player, ConfigurationSection config) ->
                         getAchievementManager().getAchievementHolder(player).hasGainedAchievement(config.getString("achievement")));
