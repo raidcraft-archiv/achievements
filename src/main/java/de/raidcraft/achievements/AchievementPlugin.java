@@ -9,6 +9,7 @@ import de.raidcraft.achievements.listener.PlayerListener;
 import de.raidcraft.achievements.trigger.AchievementTrigger;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.action.ActionAPI;
+import de.raidcraft.api.action.requirement.Requirement;
 import de.raidcraft.api.chat.Chat;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -52,8 +53,18 @@ public class AchievementPlugin extends BasePlugin {
 		ActionAPI.register(this)
                 .action(new ResetAchievementRequirementsActions())
 				.trigger(new AchievementTrigger())
-                .requirement("achievement.has", (Player player, ConfigurationSection config) ->
-                        getAchievementManager().getAchievementHolder(player).hasGainedAchievement(config.getString("achievement")));
+                .requirement(new Requirement<Player>() {
+                    @Override
+                    @Information(
+                            value = "has-achievement",
+                            desc = "Checks if the player completed the achievement.",
+                            conf = "achievement"
+                    )
+                    public boolean test(Player player, ConfigurationSection config) {
+
+                        return getAchievementManager().getAchievementHolder(player).hasGainedAchievement(config.getString("achievement"));
+                    }
+                });
     }
 
     @Override
