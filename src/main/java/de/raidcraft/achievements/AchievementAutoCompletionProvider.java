@@ -7,7 +7,7 @@ import de.raidcraft.achievements.api.AchievementHolder;
 import de.raidcraft.achievements.api.AchievementTemplate;
 import de.raidcraft.achievements.util.AchievementUtil;
 import de.raidcraft.api.chat.AutoCompletionProvider;
-import mkremins.fanciful.FancyMessage;
+import de.raidcraft.util.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

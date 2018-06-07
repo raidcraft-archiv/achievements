@@ -1,7 +1,7 @@
 package de.raidcraft.achievements.util;
 
 import de.raidcraft.achievements.api.Achievement;
-import mkremins.fanciful.FancyMessage;
+import de.raidcraft.util.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
 /**

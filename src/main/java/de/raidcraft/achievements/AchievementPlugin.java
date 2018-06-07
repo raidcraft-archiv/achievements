@@ -67,7 +67,6 @@ public class AchievementPlugin extends BasePlugin {
                 });
     }
 
-    @Override
     public List<Class<?>> getDatabaseClasses() {
 
         List<Class<?>> tables = new ArrayList<>();

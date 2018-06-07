@@ -21,32 +21,39 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>achievements</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.12-0.1-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <name>Achievements</name>
 
-    <scm>
-        <developerConnection>scm:git:ssh://git@raid-craft.de:22109/raid-craft-de/${project.artifactId}.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-
     <parent>
-        <groupId>de.raidcraft</groupId>
-        <artifactId>masterpom</artifactId>
-        <version>LATEST</version>
+        <groupId>de.faldoria</groupId>
+        <artifactId>FaldoriaMasterPom</artifactId>
+        <version>1.12-0.1</version>
     </parent>
 
     <repositories>
         <repository>
-            <id>raidcraft</id>
-            <url>http://repo.raid-craft.eu/artifactory/repo/</url>
+            <id>faldoria-deps</id>
+            <url>https://repo.faldoria.de/artifactory/faldoria-repo/</url>
         </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>de.raidcraft</groupId>
+            <groupId>de.faldoria</groupId>
             <artifactId>raidcraft-api</artifactId>
-            <version>1.7.0-SNAPSHOT</version>
+            <version>1.12-0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
