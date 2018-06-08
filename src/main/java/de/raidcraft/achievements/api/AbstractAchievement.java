@@ -54,7 +54,7 @@ public abstract class AbstractAchievement<T> implements Achievement<T> {
 
         // trigger all applicable actions
         getApplicableActions().forEach(action -> action.accept(getHolder().getType()));
-        // and remove all persistant requirements
+        // and remove all persistent requirements
         getApplicableRequirements().forEach(requirement -> requirement.delete(getHolder().getType()));
         save();
         return true;

@@ -1,14 +1,9 @@
 package de.raidcraft.achievements.api;
 
+import de.raidcraft.api.action.TriggerFactory;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.requirement.Requirement;
-import de.raidcraft.api.action.TriggerFactory;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -97,11 +92,11 @@ public abstract class AbstractAchievementTemplate<T> implements AchievementTempl
         for (Requirement<T> requirement : unorderedRequirements) {
             boolean test = requirement.test(entity);
             // only set to false and not back to true
-            // also dont set to false when the requirement is optional
+            // also dont set to false when the withRequirement is optional
             if (allUnorderedMatch && !requirement.isOptional()) {
                 allUnorderedMatch = test;
                 // we dont break here because we want to check all requirements
-                // maybe one is counting or persistant
+                // maybe one is counting or persistent
             }
         }
 

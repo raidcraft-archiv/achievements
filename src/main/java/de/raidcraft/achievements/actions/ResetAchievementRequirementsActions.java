@@ -16,7 +16,7 @@ public class ResetAchievementRequirementsActions implements Action<Player> {
     @Override
     @Information(
             value = "achievement.reset",
-            desc = "Resets all persistant requirements of the achievement.",
+            desc = "Resets all persistent requirements of the achievement.",
             conf = "achievement: <identifier>"
     )
     public void accept(Player player, ConfigurationSection config) {

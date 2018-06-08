@@ -191,7 +191,7 @@ public interface AchievementHolder<T> {
 
     /**
      * Adds the given achievement template to the holder as an {@link Achievement}.
-     * This will mark the achievement as active and start checking requirements.
+     * This will mark the achievement as active and startStage checking requirements.
      * If the holder already has the achievement but it is inactive, because it was removed, it will
      * be reactivated. If the achievement is already active or gained nothing will happen.
      *

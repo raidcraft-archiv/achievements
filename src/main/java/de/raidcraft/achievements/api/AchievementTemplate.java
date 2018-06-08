@@ -24,7 +24,7 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
 
     /**
      * Gets the friendly display name of the achievement as it is displayed
-     * to the player and in text messages and outputs.
+     * to the player and in withText messages and outputs.
      *
      * @return friendly display name
      */
