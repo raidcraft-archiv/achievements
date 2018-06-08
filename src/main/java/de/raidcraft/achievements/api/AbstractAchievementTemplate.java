@@ -1,8 +1,11 @@
 package de.raidcraft.achievements.api;
 
+import de.raidcraft.RaidCraft;
+import de.raidcraft.api.RaidCraftException;
 import de.raidcraft.api.action.TriggerFactory;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.requirement.Requirement;
+import de.raidcraft.tables.RcLogLevel;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -77,34 +80,41 @@ public abstract class AbstractAchievementTemplate<T> implements AchievementTempl
         if (getApplicableRequirements().isEmpty()) {
             return createAchievement(entity).unlock();
         }
+        boolean allUnorderedMatch = false;
 
-        // first lets filter out all ordered and unordered requirements
-        List<Requirement<T>> orderedRequirements = getApplicableRequirements().stream()
-                .filter(Requirement::isOrdered)
-                .sorted()
-                .collect(Collectors.toList());
-        List<Requirement<T>> unorderedRequirements = getApplicableRequirements().stream()
-                .filter(req -> !req.isOrdered())
-                .collect(Collectors.toList());
+        try {
+            // first lets filter out all ordered and unordered requirements
+            List<Requirement<T>> orderedRequirements = getApplicableRequirements().stream()
+                    .filter(Requirement::isOrdered)
+                    .sorted()
+                    .collect(Collectors.toList());
+            List<Requirement<T>> unorderedRequirements = getApplicableRequirements().stream()
+                    .filter(req -> !req.isOrdered())
+                    .collect(Collectors.toList());
 
-        boolean allUnorderedMatch = true;
-        // now we go thru all unordered requirements and test them
-        for (Requirement<T> requirement : unorderedRequirements) {
-            boolean test = requirement.test(entity);
-            // only set to false and not back to true
-            // also dont set to false when the withRequirement is optional
-            if (allUnorderedMatch && !requirement.isOptional()) {
-                allUnorderedMatch = test;
-                // we dont break here because we want to check all requirements
-                // maybe one is counting or persistent
+            allUnorderedMatch = true;
+            // now we go thru all unordered requirements and test them
+            for (Requirement<T> requirement : unorderedRequirements) {
+                boolean test = requirement.test(entity);
+                // only set to false and not back to true
+                // also dont set to false when the withRequirement is optional
+                if (allUnorderedMatch && !requirement.isOptional()) {
+                    allUnorderedMatch = test;
+                    // we dont break here because we want to check all requirements
+                    // maybe one is counting or persistent
+                }
             }
-        }
 
-        // lets now check all of our ordered requirements and abort if one does not match
-        for (Requirement<T> requirement : orderedRequirements) {
-            if (!requirement.test(entity)) {
-                return false;
+            // lets now check all of our ordered requirements and abort if one does not match
+            for (Requirement<T> requirement : orderedRequirements) {
+                if (!requirement.test(entity)) {
+                    return false;
+                }
             }
+        } catch (RaidCraftException e) {
+            allUnorderedMatch = false;
+            e.printStackTrace();
+            RaidCraft.log(e.getMessage(), "Achievement", RcLogLevel.SEVERE);
         }
 
         return allUnorderedMatch && createAchievement(entity).unlock();
