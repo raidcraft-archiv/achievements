@@ -42,14 +42,22 @@ public class AdminCommands {
     public void reload(CommandContext args, CommandSender sender) {
 
         plugin.reload();
-        sender.sendMessage(ChatColor.GREEN + "Achievements were reloaded. See console for details...");
+        sender.sendMessage(ChatColor.GREEN + "" + plugin.getAchievementManager().getAchievements().size() + " Achievements were reloaded. See console for details...");
     }
 
     @Command(
             aliases = {"create"},
             desc = "Creates an achievement at the given location.",
             min = 2,
-            flags = "m:r:p:sbed:"
+            flags = "m:r:p:sbed:",
+            help = "<unique_name> <display name>\n" +
+                    "\t* -m <path> | Folder Structure; separate dirs with .\n" +
+                    "\t* -p <points> | Awarded Achievement Points\n" +
+                    "\t* -d <description> | Description for players\n" +
+                    "\t* -e enables the achievement\n" +
+                    "\t* -b broadcasts the achievement\n" +
+                    "\t* -s makes the achievement secret\n" +
+                    "\t* -r <number> | Radius around the current location"
     )
     @CommandPermissions("rcachievements.achievement.create")
     public void create(CommandContext args, CommandSender sender) throws CommandException {
