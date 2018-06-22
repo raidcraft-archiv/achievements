@@ -1,34 +1,8 @@
-main: de.raidcraft.achievements.AchievementPlugin
-name: RCAchievements
+main: de.raidcraft.betonquestbridge.RCBetonQuestBridgePlugin
+name: RCBetonQuestBridge
 version: ${project.version}#${build.number}
-description: Implementation of the achievements API.
+description: Implementation of a Beton Quest <-> RaidCraft Plugins bridge.
 author: Silthus
 website: http://www.raid-craft.de
-depend: [RaidCraft-API]
-database: true
-permissions:
-  rcachievements.player:
-      description: Gives access to all relevant player commands.
-      default: false
-      children:
-        rcachievements.cmd.top: true
-        rcachievements.cmd.list: true
-  rcachievements.mod:
-    description: Grants aditional command permissions for moderators
-    default: false
-    children:
-      rcachievements.player: true
-      rcachievements.achievement.create: true
-      rcachievements.achievement.enable: true
-      rcachievements.achievement.disable: true
-      rcachievements.reload: true
-      rcachievements.gain-disabled: true
-      rcachievements.achievement.listall: true
-      rcachievement.cmd.teleport: true
-  rcachievements.admin:
-    description: Grants all rcskills permissions.
-    default: false
-    children:
-      rcskills.mod: true
-      rcachievements.achievement.give: true
-      rcachievements.achievement.remove: true
+depend: [RaidCraft-API, BetonQuest]
+database: false
