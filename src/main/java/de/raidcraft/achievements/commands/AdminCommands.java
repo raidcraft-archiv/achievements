@@ -50,7 +50,7 @@ public class AdminCommands {
             desc = "Creates an achievement at the given location.",
             min = 2,
             flags = "m:r:p:sbed:",
-            help = "<unique_name> <display name>\n" +
+            help = "<unique_name> <display displayName>\n" +
                     "\t* -m <path> | Folder Structure; separate dirs with .\n" +
                     "\t* -p <points> | Awarded Achievement Points\n" +
                     "\t* -d <description> | Description for players\n" +
@@ -134,7 +134,7 @@ public class AdminCommands {
                 .filter(predicate)
                 .filter(achievement -> achievement.getIdentifier().startsWith(args.getString(0).toLowerCase())
                         || achievement.getDisplayName().toLowerCase().startsWith(args.getJoinedStrings(0).toLowerCase()))
-                .findFirst().orElseThrow(() -> new CommandException("No machting achievement with the name " + args.getJoinedStrings(0) + " found!"));
+                .findFirst().orElseThrow(() -> new CommandException("No machting achievement with the displayName " + args.getJoinedStrings(0) + " found!"));
     }
 
     @Command(

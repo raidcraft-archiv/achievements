@@ -2,11 +2,7 @@ package de.raidcraft.achievements;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.achievements.PlayerAchievement;
-import de.raidcraft.achievements.api.Achievement;
-import de.raidcraft.achievements.api.AchievementException;
-import de.raidcraft.achievements.api.AchievementHolder;
-import de.raidcraft.achievements.api.AchievementTemplate;
-import de.raidcraft.achievements.api.DuplicateAchievementException;
+import de.raidcraft.achievements.api.*;
 import de.raidcraft.achievements.config.PlayerAchievementTemplate;
 import de.raidcraft.achievements.config.YAMLAchievementTemplate;
 import de.raidcraft.achievements.database.TAchievementHolder;
@@ -23,14 +19,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author mdoering
@@ -124,7 +113,7 @@ public final class AchievementManager implements Component {
     public void registerAchievementTemplate(AchievementTemplate template) throws DuplicateAchievementException {
 
         if (registeredTemplates.containsKey(template.getIdentifier())) {
-            throw new DuplicateAchievementException("Template with the name " + template.getIdentifier() + " is already registered!");
+            throw new DuplicateAchievementException("Template with the displayName " + template.getIdentifier() + " is already registered!");
         }
         registeredTemplates.put(template.getIdentifier(), template);
     }

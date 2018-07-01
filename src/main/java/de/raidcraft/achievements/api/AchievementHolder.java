@@ -16,10 +16,10 @@ public interface AchievementHolder<T> {
     UUID getUniqueIdentifier();
 
     /**
-     * Gets the friendly display name of the holder as it is displayed
+     * Gets the friendly display displayName of the holder as it is displayed
      * to players and in chat messages.
      *
-     * @return friendly display name
+     * @return friendly display displayName
      */
     String getDisplayName();
 

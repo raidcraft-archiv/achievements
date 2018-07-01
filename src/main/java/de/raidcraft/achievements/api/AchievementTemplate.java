@@ -15,18 +15,18 @@ import de.raidcraft.api.action.trigger.TriggerListener;
 public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder, TriggerHolder, TriggerListener<T> {
 
     /**
-     * Gets the unique name of the Achievement that can be used to compare
-     * or filter it. The unique name is based off the folder structure and file name.
+     * Gets the unique displayName of the Achievement that can be used to compare
+     * or filter it. The unique displayName is based off the folder structure and file displayName.
      *
-     * @return unique name of the achievement
+     * @return unique displayName of the achievement
      */
     String getIdentifier();
 
     /**
-     * Gets the friendly display name of the achievement as it is displayed
+     * Gets the friendly display displayName of the achievement as it is displayed
      * to the player and in withText messages and outputs.
      *
-     * @return friendly display name
+     * @return friendly display displayName
      */
     String getDisplayName();
 
@@ -66,14 +66,14 @@ public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder,
 
     /**
      * Sets the achievement as secret achievements. Secret achievements dont display their
-     * name and description but still get broadcasted with their name when gained.
+     * displayName and description but still get broadcasted with their displayName when gained.
      *
-     * @param secret true will hide the name and description in the overview
+     * @param secret true will hide the displayName and description in the overview
      */
     void setSecret(boolean secret);
 
     /**
-     * Checks if the name and description of the achievement are hidden in the overview.
+     * Checks if the displayName and description of the achievement are hidden in the overview.
      *
      * @return true if achievement is secret. default is false
      */
