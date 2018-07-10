@@ -22,7 +22,7 @@
     <artifactId>achievements</artifactId>
     <packaging>jar</packaging>
     <version>1.12-0.1-SNAPSHOT</version>
-    <name>Achievements</name>
+    <name>RCAchievements</name>
 
     <parent>
         <groupId>de.faldoria</groupId>
