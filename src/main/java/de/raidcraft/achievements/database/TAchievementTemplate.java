@@ -1,9 +1,9 @@
 package de.raidcraft.achievements.database;
 
-import com.avaje.ebean.EbeanServer;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.achievements.api.AchievementTemplate;
+import io.ebean.EbeanServer;
 import io.ebean.annotation.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +26,7 @@ public class TAchievementTemplate {
 
         EbeanServer database = RaidCraft.getDatabase(AchievementPlugin.class);
         TAchievementTemplate entry = database.find(TAchievementTemplate.class).where()
-                .eq("identifier", template.getIdentifier()).findUnique();
+                .eq("identifier", template.getIdentifier()).findOne();
         if (entry == null) {
             entry = new TAchievementTemplate();
             entry.setIdentifier(template.getIdentifier());

@@ -163,7 +163,7 @@ public final class AchievementManager implements Component {
 
     public AchievementHolder<TAchievementHolder> getAchievementHolder(String name) {
 
-        TAchievementHolder holder = plugin.getDatabase().find(TAchievementHolder.class).where().istartsWith("displayName", name).findUnique();
+        TAchievementHolder holder = plugin.getDatabase().find(TAchievementHolder.class).where().istartsWith("displayName", name).findOne();
         return getAchievementHolder(holder.getUuid(), holder);
     }
 

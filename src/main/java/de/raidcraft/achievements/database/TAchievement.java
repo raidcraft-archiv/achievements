@@ -1,9 +1,9 @@
 package de.raidcraft.achievements.database;
 
-import com.avaje.ebean.EbeanServer;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.achievements.AchievementPlugin;
 import de.raidcraft.achievements.api.Achievement;
+import io.ebean.EbeanServer;
 import io.ebean.annotation.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,7 +29,7 @@ public class TAchievement {
         TAchievementHolder holderEntry = TAchievementHolder.load(achievement.getHolder());
         TAchievement entry = database.find(TAchievement.class).where()
                 .eq("template_id", templateEntry.getId())
-                .eq("holder_id", holderEntry.getId()).findUnique();
+                .eq("holder_id", holderEntry.getId()).findOne();
         if (entry == null) {
             entry = new TAchievement();
             entry.setTemplate(templateEntry);
