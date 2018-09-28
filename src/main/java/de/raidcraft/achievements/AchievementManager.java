@@ -95,7 +95,7 @@ public final class AchievementManager implements Component {
 
     public int getRank(AchievementHolder holder) {
 
-        List<TAchievementHolder> list = plugin.getDatabase().find(TAchievementHolder.class).orderBy("points").findList();
+        List<TAchievementHolder> list = plugin.getRcDatabase().find(TAchievementHolder.class).orderBy("points").findList();
         Collections.reverse(list);
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getUuid().equals(holder.getUniqueIdentifier())) {
@@ -163,7 +163,7 @@ public final class AchievementManager implements Component {
 
     public AchievementHolder<TAchievementHolder> getAchievementHolder(String name) {
 
-        TAchievementHolder holder = plugin.getDatabase().find(TAchievementHolder.class).where().istartsWith("displayName", name).findOne();
+        TAchievementHolder holder = plugin.getRcDatabase().find(TAchievementHolder.class).where().istartsWith("displayName", name).findOne();
         return getAchievementHolder(holder.getUuid(), holder);
     }
 

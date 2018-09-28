@@ -41,7 +41,7 @@ public class PlayerCommands {
     @CommandPermissions("rcachievements.cmd.top")
     public void toplist(CommandContext args, CommandSender sender) throws CommandException {
 
-        List<TAchievementHolder> list = plugin.getDatabase().find(TAchievementHolder.class).orderBy("points").findList();
+        List<TAchievementHolder> list = plugin.getRcDatabase().find(TAchievementHolder.class).orderBy("points").findList();
         Collections.reverse(list);
         new PaginatedResult<TAchievementHolder>("Platz. Spieler (Punkte)") {
 
