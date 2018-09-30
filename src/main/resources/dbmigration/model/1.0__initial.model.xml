@@ -70,15 +70,6 @@
             <uniqueConstraint name="uq_rc_listener_listener_server" columnNames="listener,server" oneToOne="false"
                               nullableColumns="listener,server"/>
         </createTable>
-        <createTable name="rc_log" pkName="pk_rc_log">
-            <column name="id" type="integer" primaryKey="true"/>
-            <column name="level" type="integer" checkConstraint="check ( level in (0,1,2,3))"
-                    checkConstraintName="ck_rc_log_level"/>
-            <column name="category" type="varchar"/>
-            <column name="log" type="TEXT"/>
-            <column name="last" type="timestamp"/>
-            <column name="server" type="varchar"/>
-        </createTable>
         <createTable name="rc_object_storage" pkName="pk_rc_object_storage">
             <column name="id" type="integer" primaryKey="true"/>
             <column name="storage_name" type="varchar" notnull="true"/>
