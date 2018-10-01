@@ -1,0 +1,3 @@
+entity-packages: de.raidcraft.achievements
+transactional-packages: de.raidcraft.achievements
+querybean-packages: de.raidcraft.achievements

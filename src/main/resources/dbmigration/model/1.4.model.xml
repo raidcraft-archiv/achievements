@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <createTable name="rc_achievements_holder_achievements" pkName="pk_rc_achievements_holder_achievements">
+            <column name="id" type="integer" primaryKey="true"/>
+            <column name="holder_id" type="integer" notnull="true" references="rc_achievements_holders.id"
+                    foreignKeyName="fk_rc_achievements_holder_achievements_holder_id"
+                    foreignKeyIndex="ix_rc_achievements_holder_achievements_holder_id"/>
+            <column name="template_id" type="integer" notnull="true" references="rc_achievements_templates.id"
+                    foreignKeyName="fk_rc_achievements_holder_achievements_template_id"
+                    foreignKeyIndex="ix_rc_achievements_holder_achievements_template_id"/>
+            <column name="completed" type="timestamp"/>
+        </createTable>
+        <createTable name="rc_achievements_holders" pkName="pk_rc_achievements_holders">
+            <column name="id" type="integer" primaryKey="true"/>
+            <column name="uuid" type="uuid" unique="uq_rc_achievements_holders_uuid"/>
+            <column name="display_name" type="varchar"/>
+            <column name="points" type="integer" notnull="true"/>
+        </createTable>
+        <createTable name="rc_achievements_templates" pkName="pk_rc_achievements_templates">
+            <column name="id" type="integer" primaryKey="true"/>
+            <column name="identifier" type="varchar" notnull="true" unique="uq_rc_achievements_templates_identifier"/>
+            <column name="display_name" type="varchar"/>
+            <column name="description" type="varchar"/>
+            <column name="points" type="integer" notnull="true"/>
+            <column name="enabled" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="secret" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="broadcasting" type="boolean" defaultValue="false" notnull="true"/>
+        </createTable>
+    </changeSet>
+</migration>

@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 @EqualsAndHashCode(of = {"id"})
 @Data
 @Entity
-@Table(name = "achievements_holder_achievements")
+@Table(name = "rc_achievements_holder_achievements")
 public class TAchievement {
 
     public static TAchievement load(Achievement achievement) {

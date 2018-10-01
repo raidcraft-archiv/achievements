@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @EqualsAndHashCode(of = {"id"})
 @Data
 @Entity
-@Table(name = "achievements_templates")
+@Table(name = "rc_achievements_templates")
 public class TAchievementTemplate {
 
     public static TAchievementTemplate load(AchievementTemplate template) {

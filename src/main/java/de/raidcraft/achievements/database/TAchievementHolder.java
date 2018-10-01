@@ -21,7 +21,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of = {"id"})
 @Data
 @Entity
-@Table(name = "achievements_holders")
+@Table(name = "rc_achievements_holders")
 public class TAchievementHolder {
 
     public static TAchievementHolder load(AchievementHolder holder) {
