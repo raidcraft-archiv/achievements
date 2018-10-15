@@ -3,6 +3,7 @@ package de.raidcraft.achievements.api;
 import de.raidcraft.api.action.TriggerFactory;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.requirement.Requirement;
+import de.raidcraft.api.action.trigger.Trigger;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public abstract class AbstractAchievementTemplate<T> implements AchievementTempl
     }
 
     @Override
-    public boolean processTrigger(T entity) {
+    public boolean processTrigger(T entity, Trigger trigger) {
 
         if (getApplicableRequirements().isEmpty()) {
             return createAchievement(entity).unlock();

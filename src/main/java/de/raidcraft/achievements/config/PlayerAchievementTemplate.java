@@ -8,6 +8,7 @@ import de.raidcraft.achievements.api.AchievementHolder;
 import de.raidcraft.api.action.ActionAPI;
 import de.raidcraft.api.action.action.Action;
 import de.raidcraft.api.action.requirement.Requirement;
+import de.raidcraft.api.action.trigger.Trigger;
 import lombok.NonNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -25,10 +26,10 @@ public class PlayerAchievementTemplate extends YAMLAchievementTemplate<Player> {
     }
 
     @Override
-    public boolean processTrigger(Player entity) {
+    public boolean processTrigger(Player entity, Trigger trigger) {
 
         AchievementHolder<Player> holder = RaidCraft.getComponent(AchievementPlugin.class).getAchievementManager().getAchievementHolder(entity);
-        return !holder.hasGainedAchievement(this) && super.processTrigger(entity);
+        return !holder.hasGainedAchievement(this) && super.processTrigger(entity, trigger);
     }
 
     @Override

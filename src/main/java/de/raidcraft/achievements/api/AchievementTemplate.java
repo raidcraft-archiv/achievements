@@ -2,7 +2,6 @@ package de.raidcraft.achievements.api;
 
 import de.raidcraft.api.action.action.ActionHolder;
 import de.raidcraft.api.action.requirement.RequirementHolder;
-import de.raidcraft.api.action.trigger.TriggerHolder;
 import de.raidcraft.api.action.trigger.TriggerListener;
 
 /**
@@ -12,7 +11,7 @@ import de.raidcraft.api.action.trigger.TriggerListener;
  * Depending on the implementation templates can be generated from a database,
  * file system or any other source.
  */
-public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder, TriggerHolder, TriggerListener<T> {
+public interface AchievementTemplate<T> extends RequirementHolder, ActionHolder, TriggerListener<T> {
 
     /**
      * Gets the unique displayName of the Achievement that can be used to compare
