@@ -9,8 +9,11 @@ import de.raidcraft.achievements.database.TAchievementHolder;
 import de.raidcraft.achievements.database.TAchievementTemplate;
 import de.raidcraft.achievements.holder.AchievementPlayer;
 import de.raidcraft.api.Component;
+import de.raidcraft.api.config.ConfigLoader;
 import de.raidcraft.api.config.SimpleConfiguration;
+import de.raidcraft.api.quests.Quests;
 import de.raidcraft.util.CaseInsensitiveMap;
+import de.raidcraft.util.ConfigUtil;
 import de.raidcraft.util.UUIDUtil;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -38,42 +41,34 @@ public final class AchievementManager implements Component {
         registerAchievementHolder(Player.class, AchievementPlayer.class);
         registerAchievement(Player.class, PlayerAchievement.class);
         RaidCraft.registerComponent(AchievementManager.class, this);
+        Quests.registerQuestLoader(new ConfigLoader(plugin, "achievement") {
+            @Override
+            public void loadConfig(String id, ConfigurationSection config) {
+                loadAchievement(id, config);
+            }
+        });
         load();
     }
 
     private void load() {
 
-        loadFiles("", new File(plugin.getDataFolder(), "achievements").listFiles());
+        ConfigUtil.loadRecursiveConfigs(plugin, "achievements", new ConfigLoader(plugin) {
+            @Override
+            public void loadConfig(String id, ConfigurationSection config) {
+                loadAchievement(id, config);
+            }
+        });
         plugin.getLogger().info("Loaded " + registeredTemplates.size() + " achievements...");
     }
 
-    private void loadFiles(String base, File[] files) {
-
-        if (files == null) return;
-        List<File> fileList = Arrays.asList(files);
-        // lets load all achievements
-        fileList.stream()
-                .filter(File::isFile)
-                .forEach(file -> loadAchievement(base, file));
-        // recurse over all sub directories
-        fileList.stream()
-                .filter(File::isDirectory)
-                .forEach(dir -> loadFiles(base + (base.equals("") ? "" : ".") + dir.getName().toLowerCase(), dir.listFiles()));
-    }
-
-    private void loadAchievement(String identifier, File file) {
+    private void loadAchievement(String identifier, ConfigurationSection config) {
 
         try {
-            ConfigurationSection config = plugin.configure(new SimpleConfiguration<>(plugin, file));
-            config = de.raidcraft.util.ConfigUtil.replacePathReferences(config, identifier);
-            if (!identifier.equals("")) identifier += ".";
-            identifier += file.getName().toLowerCase();
-            identifier = identifier.replace(".yml", "");
             YAMLAchievementTemplate template = new PlayerAchievementTemplate(identifier, config);
             registerAchievementTemplate(template);
             template.registerListeners();
             TAchievementTemplate.save(template);
-            plugin.info("loaded template: " + identifier);
+            plugin.getLogger().info("Loaded achievement: " + identifier);
         } catch (DuplicateAchievementException e) {
             plugin.getLogger().warning(e.getMessage());
         }
