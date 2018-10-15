@@ -1,5 +1,6 @@
 package de.raidcraft.achievements;
 
+import de.raidcraft.achievements.actions.GiveAchievementAction;
 import de.raidcraft.achievements.actions.ResetAchievementRequirementsActions;
 import de.raidcraft.achievements.commands.BaseCommands;
 import de.raidcraft.achievements.database.TAchievement;
@@ -51,12 +52,14 @@ public class AchievementPlugin extends BasePlugin {
 
 	private void registerActionAPI(){
 		ActionAPI.register(this)
+                .global()
+                .action(new GiveAchievementAction())
                 .action(new ResetAchievementRequirementsActions())
 				.trigger(new AchievementTrigger())
                 .requirement(new Requirement<Player>() {
                     @Override
                     @Information(
-                            value = "has-achievement",
+                            value = "achievement",
                             desc = "Checks if the player completed the achievement.",
                             conf = "achievement"
                     )
