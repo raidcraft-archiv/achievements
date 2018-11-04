@@ -46,6 +46,11 @@ public final class AchievementManager implements Component {
             public void loadConfig(String id, ConfigurationSection config) {
                 loadAchievement(id, config);
             }
+
+            @Override
+            public void unloadConfig(String id) {
+                unregisterAchievementTemplate(id);
+            }
         });
         load();
     }
@@ -113,9 +118,10 @@ public final class AchievementManager implements Component {
         registeredTemplates.put(template.getIdentifier(), template);
     }
 
-    public void unregisterAchievementTemplate(AchievementTemplate template) {
+    public void unregisterAchievementTemplate(String id) {
 
-        registeredTemplates.remove(template.getIdentifier());
+        AchievementTemplate template = registeredTemplates.remove(id);
+        if (template != null) template.unregisterListeners();
     }
 
     public AchievementTemplate getAchievementTemplate(String identifier) throws AchievementException {
