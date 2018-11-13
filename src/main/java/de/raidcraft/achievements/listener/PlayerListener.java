@@ -37,7 +37,6 @@ public class PlayerListener implements Listener {
                 int rank = holder.getRank();
                 FancyMessage msg = new FancyMessage(holder.getDisplayName())
                         .color(ChatColor.AQUA)
-                        .style(ChatColor.UNDERLINE)
                         .formattedTooltip(
                                 new FancyMessage("#" + rank + " ")
                                         .color(rank < 4 ? (rank < 3 ? (rank < 2 ? ChatColor.GOLD : ChatColor.GRAY) : ChatColor.RED) : ChatColor.AQUA)
