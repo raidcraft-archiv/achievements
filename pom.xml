@@ -22,10 +22,7 @@
     <artifactId>achievements</artifactId>
     <packaging>jar</packaging>
     <name>RCAchievements</name>
-
-    <properties>
-        <version>1.13.3</version>
-    </properties>
+    <version>1.13.3-SNAPSHOT</version>
 
     <parent>
         <groupId>de.faldoria</groupId>
@@ -44,7 +41,7 @@
         <dependency>
             <groupId>de.faldoria</groupId>
             <artifactId>raidcraft-api</artifactId>
-            <version>1.13.3+b212</version>
+            <version>1.13.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
