@@ -10,6 +10,7 @@ import de.raidcraft.achievements.database.TAchievementTemplate;
 import de.raidcraft.achievements.holder.AchievementPlayer;
 import de.raidcraft.api.Component;
 import de.raidcraft.api.config.ConfigLoader;
+import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.SimpleConfiguration;
 import de.raidcraft.api.quests.Quests;
 import de.raidcraft.util.CaseInsensitiveMap;
@@ -41,9 +42,9 @@ public final class AchievementManager implements Component {
         registerAchievementHolder(Player.class, AchievementPlayer.class);
         registerAchievement(Player.class, PlayerAchievement.class);
         RaidCraft.registerComponent(AchievementManager.class, this);
-        Quests.registerQuestLoader(new ConfigLoader(plugin, "achievement") {
+        Quests.registerQuestLoader(new ConfigLoader<AchievementPlugin>(plugin, "achievement") {
             @Override
-            public void loadConfig(String id, ConfigurationSection config) {
+            public void loadConfig(String id, ConfigurationBase<AchievementPlugin> config) {
                 loadAchievement(id, config);
             }
 
@@ -57,9 +58,9 @@ public final class AchievementManager implements Component {
 
     private void load() {
 
-        ConfigUtil.loadRecursiveConfigs(plugin, "achievements", new ConfigLoader(plugin) {
+        ConfigUtil.loadRecursiveConfigs(plugin, "achievements", new ConfigLoader<AchievementPlugin>(plugin) {
             @Override
-            public void loadConfig(String id, ConfigurationSection config) {
+            public void loadConfig(String id, ConfigurationBase<AchievementPlugin> config) {
                 loadAchievement(id, config);
             }
         });
